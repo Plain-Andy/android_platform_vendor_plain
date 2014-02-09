@@ -43,13 +43,6 @@ endif;
 if
 file_getprop("/tmp/aroma/systemapk.prop","item.1.7") != "1"
 then
-delete("/system/app/GooManager.apk");
-else
-ui_print("@	Installing Goo Manager");
-endif;
-if
-file_getprop("/tmp/aroma/systemapk.prop","item.1.8") != "1"
-then
 delete("/system/app/LiveWallpapers.apk");
 delete("/system/app/NoiseField.apk");
 delete("/system/app/PhaseBeam.apk");
@@ -86,19 +79,4 @@ ui_print("@	Installing Trebuchet");
 delete("/system/app/Launcher2");
 delete("/system/app/Launcher3");
 
-endif;
-
-package_extract_dir("usb","/tmp");
-if
-file_getprop("/tmp/aroma/usb.prop","selected") == "1"
-then
-set_perm(0, 0, 0777, "/tmp/ums.sh");
-run_program("/tmp/ums.sh");
-endif;
-
-if
-file_getprop("/tmp/aroma/usb.prop","selected") == "2"
-then
-set_perm(0, 0, 0777, "/tmp/mtp.sh");
-run_program("/tmp/mtp.sh");
 endif;

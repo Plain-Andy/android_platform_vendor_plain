@@ -97,9 +97,7 @@ checkbox(
 			"Calendar",     "",0, #--item.1.4
 			"Desk Clock",     "",0, #--item.1.5
 			"Email",     "",0, #--item.1.6
-			"Goo Manager",     "",0, #--item.1.7
-			"Live Wallpapers",     "",0, #--item.1.8
-			"CM File Manager",     "",0 #--item.1.9
+			"Live Wallpapers",     "",0 #--item.1.7
 );
 viewbox(
   "Ready To Install",

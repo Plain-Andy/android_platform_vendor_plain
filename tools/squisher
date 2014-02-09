@@ -97,13 +97,18 @@ echo -e
 
 
 # Add Aroma
-if [ "$PLAIN_BUILDTYPE" = Aroma ]
+if [ -n "$AROMA_BUILD" ]
 then
-printf "Unpacking Aroma..."
+echo -e $CL_GRN"Unpacking Aroma..."$CL_RST
 AROMADATE=$(date +"%Y-%m-%d")
 mv $REPACK/ota/META-INF/com/google/android/update-binary $REPACK/ota/META-INF/com/google/android/update-binary-installer
 unzip $QUIET -o $ANDROID_BUILD_TOP/vendor/plain/tools/aroma/aroma.zip
 cp $ANDROID_BUILD_TOP/vendor/plain/tools/aroma/aroma-config $REPACK/ota/META-INF/com/google/android/aroma-config
+#if [ -n "$AROMA_CPU_SCRIPT" ]
+#then
+#sed -i -e "s|@AROMA_CPU_SCRIPT@|$AROMA_CPU_SCRIPT|" $REPACK/ota/META-INF/com/google/android/aroma-config
+#awk '/# @AROMASCRIPT@/{system("cat aroma-script");next}1' $REPACK/ota/META-INF/com/google/android/updater-script > $REPACK/ota/META-INF/com/google/android/temp
+#fi
 cp $ANDROID_BUILD_TOP/vendor/plain/tools/aroma/aroma-script $REPACK/ota/META-INF/com/google/android/aroma-script
 cd $REPACK/ota/META-INF/com/google/android/
 cp $ANDROID_BUILD_TOP/changelog.txt ./aroma/changelog.txt
@@ -116,6 +121,10 @@ AROMA_MANUFACTURER=`sed -n -e'/ro\.product\.manufacturer/s/^.*=//p' $OUT/system/
 AROMA_DEVICE="$AROMA_MANUFACTURER $AROMA_MODEL"
 sed -i -e "s|@AROMA_DEVICE@|$AROMA_DEVICE|" $REPACK/ota/META-INF/com/google/android/aroma-config
 sed -i -e "s|@DATE@|$AROMADATE|" $REPACK/ota/META-INF/com/google/android/aroma-config
+#if [ -n "$AROMA_CPU_SCRIPT" ]
+#then
+#sed -i -e "s|@AROMA_CPU_SCRIPT@|$AROMA_CPU_SCRIPT|" $REPACK/ota/META-INF/com/google/android/aroma-config
+#fi
 echo
 fi
 
@@ -206,8 +215,9 @@ cp -r $ANDROID_BUILD_TOP/vendor/plain/prebuilt/apk/* $REPACK/ota/system/app
 # Pack it up and sign
 printf "Zipping package..."
 ( cd $REPACK/ota; zip $QUIET -r $REPACK/update.zip . )
-echo -e
-printf "Signing package..."
+
+echo
+echo -e $CL_CYN"Signing package..."$CL_RST
 SECURITYDIR=$ANDROID_BUILD_TOP/build/target/product/security
 java -Xmx1024m \
         -jar $OUT/../../../host/$OUT_TARGET_HOST/framework/signapk.jar \
