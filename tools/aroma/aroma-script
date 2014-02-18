@@ -1,0 +1,104 @@
+if
+file_getprop("/tmp/aroma/systemapk.prop","item.1.1") != "1"
+then
+delete("/system/app/Apollo.apk");
+else
+ui_print("@	Installing Apollo");
+endif;
+if
+file_getprop("/tmp/aroma/systemapk.prop","item.1.2") != "1"
+then
+delete("/system/app/Browser.apk");
+else
+ui_print("@	Installing Browser");
+endif;
+if
+file_getprop("/tmp/aroma/systemapk.prop","item.1.3") != "1"
+then
+delete("/system/app/Calculator.apk");
+else
+ui_print("@	Installing Calculator");
+endif;
+if
+file_getprop("/tmp/aroma/systemapk.prop","item.1.4") != "1"
+then
+delete("/system/app/Calendar.apk");
+else
+ui_print("@	Installing Calendar");
+endif;
+if
+file_getprop("/tmp/aroma/systemapk.prop","item.1.5") != "1"
+then
+delete("/system/app/DeskClock.apk");
+else
+ui_print("@	Installing Desk Clock");
+endif;
+if
+file_getprop("/tmp/aroma/systemapk.prop","item.1.6") != "1"
+then
+delete("/system/app/Email.apk");
+else
+ui_print("@	Installing Email");
+endif;
+if
+file_getprop("/tmp/aroma/systemapk.prop","item.1.7") != "1"
+then
+delete("/system/app/GooManager.apk");
+else
+ui_print("@	Installing Goo Manager");
+endif;
+if
+file_getprop("/tmp/aroma/systemapk.prop","item.1.8") != "1"
+then
+delete("/system/app/LiveWallpapers.apk");
+delete("/system/app/NoiseField.apk");
+delete("/system/app/PhaseBeam.apk");
+delete("/system/app/BlueBalls.apk");
+else
+ui_print("@	Installing Live Wallpapers");
+endif;
+if
+file_getprop("/tmp/aroma/systemapk.prop","item.1.9") != "1"
+then
+delete("/system/app/CMFileManager.apk");
+else
+ui_print("@	Installing File Manager");
+endif;
+
+if
+file_getprop("/tmp/aroma/launcher.prop","selected") == "1"
+then
+ui_print("@	Installing Launcher2");
+delete("/system/app/Launcher3");
+delete("/system/app/Trebuchet.apk");
+endif;
+if
+file_getprop("/tmp/aroma/launcher.prop","selected") == "2"
+then
+ui_print("@	Installing Launcher3");
+delete("/system/app/Launcher2");
+delete("/system/app/Trebuchet.apk");
+endif;
+if
+file_getprop("/tmp/aroma/launcher.prop","selected") == "3"
+then
+ui_print("@	Installing Trebuchet");
+delete("/system/app/Launcher2");
+delete("/system/app/Launcher3");
+
+endif;
+
+package_extract_dir("usb","/tmp");
+if
+file_getprop("/tmp/aroma/usb.prop","selected") == "1"
+then
+set_perm(0, 0, 0777, "/tmp/ums.sh");
+run_program("/tmp/ums.sh");
+endif;
+
+if
+file_getprop("/tmp/aroma/usb.prop","selected") == "2"
+then
+set_perm(0, 0, 0777, "/tmp/mtp.sh");
+run_program("/tmp/mtp.sh");
+endif;
