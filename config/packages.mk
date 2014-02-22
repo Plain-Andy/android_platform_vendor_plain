@@ -8,8 +8,6 @@ PRODUCT_PACKAGES += \
 	Basic \
 	Superuser \
 	su \
-        IllusionSettings \
-        IllusionPapers \
 	BluetoothExt
 
 # Additional apps

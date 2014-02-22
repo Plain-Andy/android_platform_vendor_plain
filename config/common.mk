@@ -2,6 +2,7 @@ PRODUCT_BRAND ?= plain
 
 # general properties
 PRODUCT_PROPERTIES_OVERRIDE += \
+	debug.sf.nobootanimation=1 \
 	keyguard.no_require_sim=true \
 	ro.url.legal=http://www.google.com/intl/%s/mobile/android/basic/phone-legal.html \
 	ro.com.google.clientidbase=android-google \
@@ -50,6 +51,9 @@ PRODUCT_COPY_FILES += \
 
 # Versioning
 -include vendor/plain/config/version.mk
+
+# ThemeChooser
+-include vendor/plain/config/vtheme_chooser.mk
 
 # Add our overlays
 PRODUCT_PACKAGE_OVERLAYS += vendor/plain/overlay/common
