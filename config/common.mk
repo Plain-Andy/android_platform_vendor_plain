@@ -2,7 +2,6 @@ PRODUCT_BRAND ?= plain
 
 # general properties
 PRODUCT_PROPERTIES_OVERRIDE += \
-	debug.sf.nobootanimation=1 \
 	keyguard.no_require_sim=true \
 	ro.url.legal=http://www.google.com/intl/%s/mobile/android/basic/phone-legal.html \
 	ro.com.google.clientidbase=android-google \
@@ -31,7 +30,6 @@ PRODUCT_COPY_FILES += \
 
 # init.d support
 PRODUCT_COPY_FILES += \
-	vendor/plain/prebuilt/etc/init.d/00banner:system/etc/init.d/00banner \
 	vendor/plain/prebuilt/bin/sysinit:system/bin/sysinit
 
 # userinit support
@@ -52,8 +50,8 @@ PRODUCT_COPY_FILES += \
 # Versioning
 -include vendor/plain/config/version.mk
 
-# ThemeChooser
--include vendor/plain/config/vtheme_chooser.mk
+# Theme Manager
+-include vendor/plain/config/themes.mk
 
 # Add our overlays
 PRODUCT_PACKAGE_OVERLAYS += vendor/plain/overlay/common

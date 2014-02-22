@@ -7,4 +7,3 @@ PRODUCT_PACKAGES += \
 # theme chooser
 PRODUCT_COPY_FILES += \
        vendor/plain/config/permissions/com.tmobile.software.themes.xml:system/etc/permissions/com.tmobile.software.themes.xml
-
