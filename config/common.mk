@@ -11,7 +11,9 @@ PRODUCT_PROPERTIES_OVERRIDE += \
 	ro.com.android.dataroaming=false
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.sys.root_access=1
+	persist.sys.root_access=1 \
+	persist.sys.strictmode.visual=0 \
+	persist.sys.strictmode.disable=1
 
 # enable ADB authentication if not on eng build
 ifneq ($(TARGET_BUILD_VARIANT),eng)
