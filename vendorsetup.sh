@@ -1,0 +1,4 @@
+add_lunch_combo plain_grouper-userdebug
+add_lunch_combo plain_vigor-userdebug
+add_lunch_combo plain_apexqtmo-userdebug
+add_lunch_combo plain_toro-userdebug
