@@ -30,5 +30,8 @@ PRODUCT_PACKAGES += \
 	nano \
 	htop \
 	powertop \
-	lsof
+	lsof \
+	ntfsfix \
+	ntfs-3g \
+	mkntfs
 
