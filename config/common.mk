@@ -53,7 +53,15 @@ PRODUCT_COPY_FILES += \
 -include vendor/plain/config/version.mk
 
 # Theme Manager
+-include vendor/plain/config/nfc_enhanced.mk
+
+# Theme Manager
 -include vendor/plain/config/themes.mk
+
+# CM Hardware Abstraction Framework
+PRODUCT_PACKAGES += \
+    org.cyanogenmod.hardware \
+    org.cyanogenmod.hardware.xml
 
 # Add our overlays
 PRODUCT_PACKAGE_OVERLAYS += vendor/plain/overlay/common
