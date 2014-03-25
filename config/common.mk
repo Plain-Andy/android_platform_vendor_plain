@@ -42,6 +42,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     vendor/plain/prebuilt/etc/init.local.rc:root/init.plain.rc
 
+PRODUCT_COPY_FILES += \
+    vendor/plain/prebuilt/etc/sec_config:system/etc/sec_config
+
 # Enable SIP and VoIP on all targets
 PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml
