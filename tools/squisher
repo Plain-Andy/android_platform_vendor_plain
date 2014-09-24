@@ -1,6 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 #
-. $ANDROID_BUILD_TOP/vendor/plain/tools/functions
+# Squish a CM otapackage for distribution
+#
+# cyanogen
+# AOKP
+
+. $ANDROID_BUILD_TOP/vendor/plain/tools/colors
 
 OUT_TARGET_HOST=`uname -a | grep Darwin`
 if [ -z "$OUT_TARGET_HOST" ]
@@ -11,36 +16,85 @@ then
    SED=sed
 else
    OUT_TARGET_HOST=darwin-x86
-   MD5=md5
+   MD5="md5 -r "
    XARGS="xargs -n 1 -P `sysctl hw.ncpu | awk '{print $2}'`"
    SED=gsed
 fi
 
 if [ -z "$OUT" -o ! -d "$OUT" ]; then
-	echo $CL_RED"ERROR: $0 only works with a full build environment. $OUT should exist."$CL_RST
+	echo -e "ERROR: $0 only works with a full build environment. $OUT should exist."
+	exit 1
+fi
+
+# out/ dir defined elsewhere
+if [ ! -z $OUT_DIR_COMMON_BASE ]; then
+	TREE_NAME=`basename $ANDROID_BUILD_TOP`
+	OUT_DIR=$OUT_DIR_COMMON_BASE/$TREE_NAME
+else
+	OUT_DIR=$ANDROID_BUILD_TOP/out
+fi
+
+if [ "$TARGET_BUILD_TYPE" = "debug" ]; then
+    OTAPACKAGE=$OUT/${TARGET_PRODUCT}_debug-ota-$TARGET_BUILD_VARIANT.$USER.zip
+elif [ "$TARGET_BUILD_VARIANT" = "userdebug" ]; then
+    OTAPACKAGE=$OUT/$TARGET_PRODUCT-ota-eng.$USER.zip
+else
+    OTAPACKAGE=$OUT/$TARGET_PRODUCT-ota-$TARGET_BUILD_VARIANT.$USER.zip
+fi
+if [ ! -f "$OTAPACKAGE" ]; then
+	echo -e "$OTAPACKAGE doesn't exist!";
 	exit 1
 fi
 
 OPTICHARGER=$ANDROID_BUILD_TOP/vendor/plain/tools/opticharger
 QUIET=-q
 DELETE_BINS="applypatch applypatch_static check_prereq recovery updater"
-DELETE_LIBS="libc_malloc_debug_leak.so libc_malloc_debug_qemu.so"
-DELETE_FONTS="MTLmr3m.ttf"
-DELETE_MEDIA="*.qmg"
+
+
+# Some products want a squashfs for xbin for space
+case "$TARGET_PRODUCT" in
+	cyanogen_dream_sapphire) WANT_SQUASHFS=1 ;;
+	*) WANT_SQUASHFS=0 ;;
+esac
+
+if [ "$WANT_SQUASHFS" -eq 1 ]; then
+	fatal=0
+	MKSQUASHFS_VER_REQ=4
+	if type mksquashfs >/dev/null 2>&1; then
+		if mksquashfs -version | grep -q "version $MKSQUASHFS_VER_REQ"; then :; else
+			echo -e
+			echo -e $CL_RED"ERROR: mksquashfs must be at least version $MKSQUASHFS_VER_REQ for this build."$CL_RST
+			fatal=1
+		fi
+	else
+		echo -e
+		echo -e $CL_RED"ERROR: $TARGET_PRODUCT requires mksquashfs."$CL_RST
+		fatal=1
+	fi
+
+	if [ "$fatal" -ne 0 ]; then
+		echo -e
+		echo -e $CL_YLW"       Unoptimized package is still available at"
+		echo -e "         $OTAPACKAGE"$CL_RST
+		exit $fatal
+	fi
+fi
 
 REPACK=$OUT/repack.d
-printf "Sanitizing Environment..."
+echo -e $CL_CYN"Sanitizing environment..."$CL_RST
 rm -rf $REPACK
 mkdir -p $REPACK
-echo
+echo -e
+
 
 # Unpack the otapackage and opticharge all apks
 mkdir $REPACK/ota
 (
 cd $REPACK/ota
-printf "Unpacking $OTAPACKAGE..."
+echo -e $CL_CYN"Unpacking $OTAPACKAGE..."$CL_RST
 unzip $QUIET $OTAPACKAGE
-echo
+echo -e
+
 
 # Add Aroma
 if [ "$PLAIN_BUILDTYPE" = Aroma ]
@@ -99,18 +153,18 @@ $SED -i \
 
 # Determine what to name the new signed package
 MODVERSION=`sed -n -e'/ro\.modversion/s/^.*=//p' $OUT/system/build.prop`
-TARGET_PRODUCT_FINAL=`echo $TARGET_PRODUCT | cut -d '_' -f2`
-echo $CL_CYN"MODVERSION: $MODVERSION"$CL_RST
+TARGET_PRODUCT_FINAL=`echo -e $TARGET_PRODUCT | cut -d '_' -f2`
+echo -e $CL_CYN"MODVERSION: $MODVERSION"$CL_RST
 OUTFILE=$OUT/$MODVERSION.zip
 
 # Delete unnecessary binaries
-( cd $REPACK/ota/system/bin; echo $DELETE_BINS | xargs rm -f; )
+( cd $REPACK/ota/system/bin; echo -e $DELETE_BINS | xargs rm -f; )
 
 # Delete unnecessary libraries
-( cd $REPACK/ota/system/lib; echo $DELETE_LIBS | xargs rm -f; )
+( cd $REPACK/ota/system/lib; echo -e $DELETE_LIBS | xargs rm -f; )
 
 # Delete Offline charging mode files
-( cd $REPACK/ota/system/media; echo $DELETE_MEDIA | xargs rm -f; )
+( cd $REPACK/ota/system/media; echo -e $DELETE_MEDIA | xargs rm -f; )
 
 if [ "$TARGET_PRODUCT_FINAL" != "infuse4g" ]
 then
@@ -122,7 +176,7 @@ fi
 rm -rf $REPACK/ota/system/media/video
 
 # Delete Unnecessary Fonts
-( cd $REPACK/ota/system/fonts; echo $DELETE_FONTS | xargs rm -f; )
+( cd $REPACK/ota/system/fonts; echo -e $DELETE_FONTS | xargs rm -f; )
 
 # No need for tts
 rm -rf $REPACK/ota/system/tts
@@ -144,7 +198,7 @@ then
 . $ANDROID_BUILD_TOP/vendor/plain/utils/changelog_gen.sh
 else
 printf "No changelog..."
-echo
+echo -e
 fi
 
 cp -r $ANDROID_BUILD_TOP/vendor/plain/prebuilt/apk/* $REPACK/ota/system/app
@@ -152,27 +206,27 @@ cp -r $ANDROID_BUILD_TOP/vendor/plain/prebuilt/apk/* $REPACK/ota/system/app
 # Pack it up and sign
 printf "Zipping package..."
 ( cd $REPACK/ota; zip $QUIET -r $REPACK/update.zip . )
-echo
+echo -e
 printf "Signing package..."
 SECURITYDIR=$ANDROID_BUILD_TOP/build/target/product/security
 java -Xmx1024m \
         -jar $OUT/../../../host/$OUT_TARGET_HOST/framework/signapk.jar \
         -w $SECURITYDIR/testkey.x509.pem $SECURITYDIR/testkey.pk8 \
         $REPACK/update.zip $OUTFILE
-echo
+echo -e
 printf "Cleaning up..."
 rm -rf $REPACK
-echo
+echo -e
 
 # Create a md5 checksum image of the repacked package
 (
 img=`basename $OUTFILE`
 cd `dirname $OUTFILE`
 $MD5 $img >$img.md5sum
-echo
-echo $CL_GRN"Package complete: $OUTFILE"$CL_RST
-echo $CL_GRN"md5: $(cat $img.md5sum | awk '{ print $1 }')"$CL_RST
-echo
+echo -e
+echo -e $CL_GRN"Package complete: $OUTFILE"$CL_RST
+echo -e $CL_GRN"md5: $(cat $img.md5sum | awk '{ print $1 }')"$CL_RST
+echo -e
 )
 
 exit 0

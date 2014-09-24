@@ -25,6 +25,7 @@ SUPERUSER_EMBEDDED := true
 
 # Backup Tool
 PRODUCT_COPY_FILES += \
+    vendor/plain/prebuilt/bin/persist.sh:install/bin/persist.sh \
     vendor/plain/prebuilt/bin/backuptool.sh:system/bin/backuptool.sh \
     vendor/plain/prebuilt/bin/backuptool.functions:system/bin/backuptool.functions \
     vendor/plain/prebuilt/bin/50-hosts.sh:system/addon.d/50-hosts.sh \
