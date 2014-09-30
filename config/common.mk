@@ -13,7 +13,10 @@ PRODUCT_PROPERTIES_OVERRIDE += \
 PRODUCT_PROPERTY_OVERRIDES += \
 	persist.sys.root_access=1 \
 	persist.sys.strictmode.visual=0 \
-	persist.sys.strictmode.disable=1
+	persist.sys.strictmode.disable=1 \
+        ro.max.fling_velocity=14000 \
+        ro.min.fling_velocity=9000 \
+        persist.sys.scrollingcache=3
 
 # enable ADB authentication if not on eng build
 ifneq ($(TARGET_BUILD_VARIANT),eng)
@@ -25,7 +28,6 @@ SUPERUSER_EMBEDDED := true
 
 # Backup Tool
 PRODUCT_COPY_FILES += \
-    vendor/plain/prebuilt/bin/persist.sh:install/bin/persist.sh \
     vendor/plain/prebuilt/bin/backuptool.sh:system/bin/backuptool.sh \
     vendor/plain/prebuilt/bin/backuptool.functions:system/bin/backuptool.functions \
     vendor/plain/prebuilt/bin/50-hosts.sh:system/addon.d/50-hosts.sh \
@@ -41,7 +43,9 @@ PRODUCT_COPY_FILES += \
 
 # Init script file with plain extras
 PRODUCT_COPY_FILES += \
-    vendor/plain/prebuilt/etc/init.local.rc:root/init.plain.rc
+    vendor/plain/prebuilt/etc/init.local.rc:root/init.plain.rc \
+    vendor/plain/prebuilt/etc/init.plain.kerneltweak.sh:/system/bin/init.plain.kerneltweak.sh \
+    vendor/plain/prebuilt/bin/plaintweak:system/bin/plaintweak
 
 PRODUCT_COPY_FILES += \
     vendor/plain/prebuilt/etc/sec_config:system/etc/sec_config

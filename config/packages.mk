@@ -1,6 +1,6 @@
 # Required packages
 PRODUCT_PACKAGES += \
-	Development \
+	SlimFileManager \
 	LatinIME \
 	VideoEditor \
 	VoiceDialer \
