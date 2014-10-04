@@ -19,6 +19,15 @@ service sysinit /system/bin/sysinit
     oneshot
     disabled
 
+service plain-post-boot /system/bin/sh /system/etc/init.plain.kerneltweak.sh
+    class late_start
+    user root
+    disabled
+    oneshot
+
+on property:sys.boot_completed=1
+    start plain-post-boot
+
 # adb over network
 on property:service.adb.tcp.port=5555
     stop adbd

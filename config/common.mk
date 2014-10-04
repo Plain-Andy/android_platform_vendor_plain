@@ -44,7 +44,7 @@ PRODUCT_COPY_FILES += \
 # Init script file with plain extras
 PRODUCT_COPY_FILES += \
     vendor/plain/prebuilt/etc/init.local.rc:root/init.plain.rc \
-    vendor/plain/prebuilt/etc/init.plain.kerneltweak.sh:/system/bin/init.plain.kerneltweak.sh \
+    vendor/plain/prebuilt/etc/init.plain.kerneltweak.sh:/system/etc/init.plain.kerneltweak.sh \
     vendor/plain/prebuilt/bin/plaintweak:system/bin/plaintweak
 
 PRODUCT_COPY_FILES += \
