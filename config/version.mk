@@ -28,5 +28,5 @@ endif
 
 # Apply it to build.prop
 PRODUCT_PROPERTY_OVERRIDES += \
-	ro.modversion=Plain-Andy-$(ROM_VERSION) \
+	ro.modversion=Plain-Andy-$(TARGET_PRODUCT_SHORT) \
 	ro.plain.version=$(ROM_VERSION)

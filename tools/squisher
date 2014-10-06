@@ -111,7 +111,8 @@ cp $ANDROID_BUILD_TOP/vendor/plain/tools/aroma/aroma-config $REPACK/ota/META-INF
 #fi
 cp $ANDROID_BUILD_TOP/vendor/plain/tools/aroma/aroma-script $REPACK/ota/META-INF/com/google/android/aroma-script
 cd $REPACK/ota/META-INF/com/google/android/
-cp $ANDROID_BUILD_TOP/changelog.txt ./aroma/changelog.txt
+. $ANDROID_BUILD_TOP/vendor/plain/utils/changelog_gen.sh date --date='1 week ago'
+cp $ANDROID_BUILD_TOP/Changelog_$(date +"%m_%d_%Y").txt ./aroma/changelog.txt
 awk '/# @AROMASCRIPT@/{system("cat aroma-script");next}1' $REPACK/ota/META-INF/com/google/android/updater-script > $REPACK/ota/META-INF/com/google/android/temp
 rm $REPACK/ota/META-INF/com/google/android/updater-script
 mv $REPACK/ota/META-INF/com/google/android/temp $REPACK/ota/META-INF/com/google/android/updater-script
@@ -161,7 +162,7 @@ $SED -i \
         $REPACK/ota/system/build.prop
 
 # Determine what to name the new signed package
-MODVERSION=`sed -n -e'/ro\.modversion/s/^.*=//p' $OUT/system/build.prop`
+MODVERSION=Plain-Andy-`sed -n -e'/ro\.plain\.version/s/^.*=//p' $OUT/system/build.prop`
 TARGET_PRODUCT_FINAL=`echo -e $TARGET_PRODUCT | cut -d '_' -f2`
 echo -e $CL_CYN"MODVERSION: $MODVERSION"$CL_RST
 OUTFILE=$OUT/$MODVERSION.zip
@@ -203,8 +204,8 @@ rm -rf $REPACK/ota/system/etc/recovery-resource.dat
 
 if [ "$PLAIN_CHANGELOG" = true ]
 then
-# Add changelog
-. $ANDROID_BUILD_TOP/vendor/plain/utils/changelog_gen.sh
+# Add weekly changelog
+. $ANDROID_BUILD_TOP/vendor/plain/utils/changelog_gen.sh date --date='1 week ago'
 else
 printf "No changelog..."
 echo -e
