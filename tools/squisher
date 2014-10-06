@@ -222,10 +222,10 @@ echo -e
 (
 img=`basename $OUTFILE`
 cd `dirname $OUTFILE`
-$MD5 $img >$img.md5sum
+$MD5 $img >$img.md5
 echo -e
 echo -e $CL_GRN"Package complete: $OUTFILE"$CL_RST
-echo -e $CL_GRN"md5: $(cat $img.md5sum | awk '{ print $1 }')"$CL_RST
+echo -e $CL_GRN"md5: $(cat $img.md5 | awk '{ print $1 }')"$CL_RST
 echo -e
 )
 
