@@ -4,6 +4,10 @@
 #
 # cyanogen
 # AOKP
+if [ -z "$AROMA_BUILD" ]
+then
+AROMA_BUILD=$1
+fi
 
 . $ANDROID_BUILD_TOP/vendor/plain/tools/colors
 
@@ -104,14 +108,14 @@ AROMADATE=$(date +"%Y-%m-%d")
 mv $REPACK/ota/META-INF/com/google/android/update-binary $REPACK/ota/META-INF/com/google/android/update-binary-installer
 unzip $QUIET -o $ANDROID_BUILD_TOP/vendor/plain/tools/aroma/aroma.zip
 cp $ANDROID_BUILD_TOP/vendor/plain/tools/aroma/aroma-config $REPACK/ota/META-INF/com/google/android/aroma-config
-#if [ -n "$AROMA_CPU_SCRIPT" ]
+#if [ -n "$AROMA_DEVICE_SCRIPT" ]
 #then
-#sed -i -e "s|@AROMA_CPU_SCRIPT@|$AROMA_CPU_SCRIPT|" $REPACK/ota/META-INF/com/google/android/aroma-config
+#sed -i -e "s|@AROMA_DEVICE_SCRIPT@|$AROMA_DEVICE_SCRIPT|" $REPACK/ota/META-INF/com/google/android/aroma-config
 #awk '/# @AROMASCRIPT@/{system("cat aroma-script");next}1' $REPACK/ota/META-INF/com/google/android/updater-script > $REPACK/ota/META-INF/com/google/android/temp
 #fi
 cp $ANDROID_BUILD_TOP/vendor/plain/tools/aroma/aroma-script $REPACK/ota/META-INF/com/google/android/aroma-script
 cd $REPACK/ota/META-INF/com/google/android/
-. $ANDROID_BUILD_TOP/vendor/plain/utils/changelog_gen.sh date --date='1 week ago'
+. $ANDROID_BUILD_TOP/vendor/plain/utils/changelog_gen.sh $(date -d "1 week ago" '+%m-%d-%Y')
 cp $ANDROID_BUILD_TOP/Changelog_$(date +"%m_%d_%Y").txt ./aroma/changelog.txt
 awk '/# @AROMASCRIPT@/{system("cat aroma-script");next}1' $REPACK/ota/META-INF/com/google/android/updater-script > $REPACK/ota/META-INF/com/google/android/temp
 rm $REPACK/ota/META-INF/com/google/android/updater-script
@@ -122,9 +126,9 @@ AROMA_MANUFACTURER=`sed -n -e'/ro\.product\.manufacturer/s/^.*=//p' $OUT/system/
 AROMA_DEVICE="$AROMA_MANUFACTURER $AROMA_MODEL"
 sed -i -e "s|@AROMA_DEVICE@|$AROMA_DEVICE|" $REPACK/ota/META-INF/com/google/android/aroma-config
 sed -i -e "s|@DATE@|$AROMADATE|" $REPACK/ota/META-INF/com/google/android/aroma-config
-#if [ -n "$AROMA_CPU_SCRIPT" ]
+#if [ -n "$AROMA_DEVICE_SCRIPT" ]
 #then
-#sed -i -e "s|@AROMA_CPU_SCRIPT@|$AROMA_CPU_SCRIPT|" $REPACK/ota/META-INF/com/google/android/aroma-config
+#sed -i -e "s|@AROMA_DEVICE_SCRIPT@|$AROMA_DEVICE_SCRIPT|" $REPACK/ota/META-INF/com/google/android/aroma-config
 #fi
 echo
 fi
@@ -205,7 +209,7 @@ rm -rf $REPACK/ota/system/etc/recovery-resource.dat
 if [ "$PLAIN_CHANGELOG" = true ]
 then
 # Add weekly changelog
-. $ANDROID_BUILD_TOP/vendor/plain/utils/changelog_gen.sh date --date='1 week ago'
+. $ANDROID_BUILD_TOP/vendor/plain/utils/changelog_gen.sh $(date -d "1 week ago" '+%m-%d-%Y')
 else
 printf "No changelog..."
 echo -e
