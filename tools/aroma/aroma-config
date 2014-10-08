@@ -39,7 +39,7 @@ anisplash(
     "splash/a5", 30,
     "splash/a6", 30
 );
-
+theme("touchwiz");
 #
 # Set Small Font to Support all fonts
 #
@@ -59,50 +59,42 @@ viewbox(
     "Press Next to continue the installation...",
   "icons/info"
 );
-
+exec("/sbin/busybox","mount","/system");
 textbox(
     "Changelog",
-    "CarbonRom Changelog",
+    "Plain-Changelog",
     "@update",
     resread("changelog.txt")
 );
-menubox(
-    "Launcher",
-	"Please choose a home launcher",
-	"icons/install",
-	"launcher.prop",
-        "Launcher2",   "", "icons/apps",
-        "Launcher3",   "", "icons/apps",
-        "Trebuchet",   "", "icons/apps"
-);
-
-menubox(
-    "USB Connection",
-	"Please choose a usb connection type",
-	"icons/install",
-	"usb.prop",
-        "Mass Storage",   "", "icons/apps",
-        "MTP",   "", "icons/apps"
-);
-
+#AROMA_DEVICE_CONFIG#
 checkbox(
     "Customize System Apps",
 	"Please choose which apps to install",
 	"icons/install",
 	"systemapk.prop",
 		"Available Apps","",2,
-			"Apollo",     "",0, #--item.1.1
-			"Browser",     "",1, #--item.1.2
-			"Calculator",     "",1, #--item.1.3
-			"Calendar",     "",0, #--item.1.4
-			"Desk Clock",     "",0, #--item.1.5
-			"Email",     "",0, #--item.1.6
-			"Live Wallpapers",     "",0 #--item.1.7
+			"Browser",     "",1, #--item.1.1
+			"Calculator",     "",1, #--item.1.2
+			"Calendar",     "",0, #--item.1.3
+			"Desk Clock",     "",0, #--item.1.4
+			"Email",     "",0, #--item.1.5
+			"Live Wallpapers",     "",0, #--item.1.6
+			"Slim File Manager",     "",0 #--item.1.7
+);
+selectbox(
+	"Boot Animations Selection",
+		"Enable bootanimations? ",
+		"@personalize",
+		"bootanim.prop",
+  
+			"Yes","", 1,      #-- selected.0 = 1
+			"No","", 0      #-- selected.0 = 2
+
 );
 viewbox(
   "Ready To Install",
   "All information has been collected for installation.\n\n"+
-  "Click Next To Start Installation. This is the last chance to cancel this installation before your Rezound is modified. To cancel, press you menu button, the select Quit Installation. S-ON INSTRUCTIONS AS FOLLOWS, allow kernel installation after reboot into HBOOT",
+  "Click Next To Start Installation. This is the last chance to cancel!",
   "icons/info"
 );
 
