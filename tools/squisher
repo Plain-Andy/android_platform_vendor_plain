@@ -107,12 +107,15 @@ echo -e $CL_GRN"Unpacking Aroma..."$CL_RST
 AROMADATE=$(date +"%Y-%m-%d")
 mv $REPACK/ota/META-INF/com/google/android/update-binary $REPACK/ota/META-INF/com/google/android/update-binary-installer
 unzip $QUIET -o $ANDROID_BUILD_TOP/vendor/plain/tools/aroma/aroma.zip
-cp $ANDROID_BUILD_TOP/vendor/plain/tools/aroma/aroma-config $REPACK/ota/META-INF/com/google/android/aroma-config
-#if [ -n "$AROMA_DEVICE_SCRIPT" ]
-#then
-#sed -i -e "s|@AROMA_DEVICE_SCRIPT@|$AROMA_DEVICE_SCRIPT|" $REPACK/ota/META-INF/com/google/android/aroma-config
-#awk '/# @AROMASCRIPT@/{system("cat aroma-script");next}1' $REPACK/ota/META-INF/com/google/android/updater-script > $REPACK/ota/META-INF/com/google/android/temp
-#fi
+if [ -e $OUT/aroma-device-script ]
+then
+cd $REPACK/ota/META-INF/com/google/android/
+cp $OUT/aroma-device-script $REPACK/ota/META-INF/com/google/android/aroma-device-script
+awk '/# @AROMA_DEVICE_SCRIPT@/{system("cat aroma-device-script");next}1' $REPACK/ota/META-INF/com/google/android/updater-script > $REPACK/ota/META-INF/com/google/android/temp
+rm $REPACK/ota/META-INF/com/google/android/updater-script
+mv $REPACK/ota/META-INF/com/google/android/temp $REPACK/ota/META-INF/com/google/android/updater-script
+rm $REPACK/ota/META-INF/com/google/android/aroma-device-script
+fi
 cp $ANDROID_BUILD_TOP/vendor/plain/tools/aroma/aroma-script $REPACK/ota/META-INF/com/google/android/aroma-script
 cd $REPACK/ota/META-INF/com/google/android/
 . $ANDROID_BUILD_TOP/vendor/plain/utils/changelog_gen.sh $(date -d "1 week ago" '+%m-%d-%Y') > /dev/null
@@ -122,14 +125,21 @@ rm $REPACK/ota/META-INF/com/google/android/updater-script
 mv $REPACK/ota/META-INF/com/google/android/temp $REPACK/ota/META-INF/com/google/android/updater-script
 rm $REPACK/ota/META-INF/com/google/android/aroma-script
 AROMA_MODEL=`sed -n -e'/ro\.product\.model/s/^.*=//p' $OUT/system/build.prop`
-AROMA_MANUFACTURER=`sed -n -e'/ro\.product\.manufacturer/s/^.*=//p' $OUT/system/build.prop`
+AROMA_MANUFACTURER=`sed -n -e'/ro\.product\.brand/s/^.*=//p' $OUT/system/build.prop`
 AROMA_DEVICE="$AROMA_MANUFACTURER $AROMA_MODEL"
+cp $ANDROID_BUILD_TOP/vendor/plain/tools/aroma/aroma-config $REPACK/ota/META-INF/com/google/android/aroma-config
+if [ -e $OUT/aroma-device-config ]
+then
+cp $OUT/aroma-device-config $REPACK/ota/META-INF/com/google/android/aroma-device-config
+awk '/#@AROMA_DEVICE_CONFIG@/{system("cat aroma-device-config");next}1' $REPACK/ota/META-INF/com/google/android/aroma-config > $REPACK/ota/META-INF/com/google/android/temp
+rm $REPACK/ota/META-INF/com/google/android/aroma-config
+mv $REPACK/ota/META-INF/com/google/android/temp $REPACK/ota/META-INF/com/google/android/aroma-config
+rm $REPACK/ota/META-INF/com/google/android/aroma-device-config
+mkdir $REPACK/ota/aroma_device
+cp -R $OUT/aroma_device/* $REPACK/ota/aroma_device
+fi
 sed -i -e "s|@AROMA_DEVICE@|$AROMA_DEVICE|" $REPACK/ota/META-INF/com/google/android/aroma-config
 sed -i -e "s|@DATE@|$AROMADATE|" $REPACK/ota/META-INF/com/google/android/aroma-config
-#if [ -n "$AROMA_DEVICE_SCRIPT" ]
-#then
-#sed -i -e "s|@AROMA_DEVICE_SCRIPT@|$AROMA_DEVICE_SCRIPT|" $REPACK/ota/META-INF/com/google/android/aroma-config
-#fi
 echo
 fi
 
@@ -166,7 +176,12 @@ $SED -i \
         $REPACK/ota/system/build.prop
 
 # Determine what to name the new signed package
+if [ -n "$AROMA_BUILD" ]
+then
+MODVERSION=Plain-Andy-`sed -n -e'/ro\.plain\.version/s/^.*=//p' $OUT/system/build.prop`-Aroma
+else
 MODVERSION=Plain-Andy-`sed -n -e'/ro\.plain\.version/s/^.*=//p' $OUT/system/build.prop`
+fi
 TARGET_PRODUCT_FINAL=`echo -e $TARGET_PRODUCT | cut -d '_' -f2`
 echo -e $CL_CYN"MODVERSION: $MODVERSION"$CL_RST
 OUTFILE=$OUT/$MODVERSION.zip
