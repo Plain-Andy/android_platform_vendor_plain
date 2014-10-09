@@ -85,3 +85,11 @@ PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/lib/libdvm.so:system/lib/libdvm.so \
         $(LOCAL_PATH)/lib/libqc-opt.so:system/lib/libqc-opt.so
 endif
+
+# Extra recovery tools for CWM 
+PRODUCT_PACKAGES += \
+    recovery_e2fsck \
+    recovery_mke2fs \
+    recovery_tune2fs \
+    mount.exfat_static \
+    minivold
