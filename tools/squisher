@@ -135,7 +135,7 @@ awk '/#@AROMA_DEVICE_CONFIG@/{system("cat aroma-device-config");next}1' $REPACK/
 rm $REPACK/ota/META-INF/com/google/android/aroma-config
 mv $REPACK/ota/META-INF/com/google/android/temp $REPACK/ota/META-INF/com/google/android/aroma-config
 rm $REPACK/ota/META-INF/com/google/android/aroma-device-config
-mkdir $REPACK/ota/aroma_device
+mkdir -p $REPACK/ota/aroma_device
 cp -R $OUT/aroma_device/* $REPACK/ota/aroma_device
 fi
 sed -i -e "s|@AROMA_DEVICE@|$AROMA_DEVICE|" $REPACK/ota/META-INF/com/google/android/aroma-config

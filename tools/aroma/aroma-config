@@ -83,13 +83,13 @@ checkbox(
 );
 selectbox(
 	"Boot Animations Selection",
-		"Enable bootanimations? ",
+		"Bootanimation mods",
 		"@personalize",
 		"bootanim.prop",
-  
-			"Yes","", 1,      #-- selected.0 = 1
-			"No","", 0      #-- selected.0 = 2
 
+  	"Enable bootanimation?","",	2,	#-- Group 1
+		"Yes","",		1,	#-- selected.0 = 1
+		"No","",		0	#-- selected.0 = 2
 );
 viewbox(
   "Ready To Install",

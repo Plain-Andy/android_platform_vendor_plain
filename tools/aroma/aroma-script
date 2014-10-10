@@ -50,7 +50,7 @@ else
 ui_print("@	Installing Slim File Manager");
 endif;
 if
-file_getprop("/tmp/aroma/bootanim.prop","selected.0") != "1"
+file_getprop("/tmp/aroma/bootanim.prop","selected.1") != "1"
 then
 ui_print("@...Disabling Boot animations...");
 package_extract_file("disable_bootanim.sh", "/tmp/disable_bootanim.sh");

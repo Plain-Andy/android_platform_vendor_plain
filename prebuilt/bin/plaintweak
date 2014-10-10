@@ -1,4 +1,10 @@
 #!/system/bin/sh
+if [ -e /sdcard/plaintweak ]
+then
+DATE=$(date +"%m"-"%d"-"%y")
+mkdir -p /sdcard/plain-tweak/$DATE
+mv /sdcard/plaintweak /sdcard/plain-tweak/$DATE/plaintweak
+fi
 extsd='sdcard'
 echo "Max CPU Clock selection:"
 echo 
