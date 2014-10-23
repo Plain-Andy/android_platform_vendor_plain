@@ -47,9 +47,6 @@ PRODUCT_COPY_FILES += \
     vendor/plain/prebuilt/etc/init.plain.kerneltweak.sh:/system/etc/init.plain.kerneltweak.sh \
     vendor/plain/prebuilt/bin/plaintweak:system/bin/plaintweak
 
-PRODUCT_COPY_FILES += \
-    vendor/plain/prebuilt/etc/sec_config:system/etc/sec_config
-
 # Enable SIP and VoIP on all targets
 PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml
@@ -93,3 +90,10 @@ PRODUCT_PACKAGES += \
     recovery_tune2fs \
     mount.exfat_static \
     minivold
+
+## Stagefright FFMPEG plugin
+PRODUCT_PACKAGES += \
+    libstagefright_soft_ffmpegadec \
+    libstagefright_soft_ffmpegvdec \
+    libFFmpegExtractor \
+    libnamparser

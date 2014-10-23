@@ -1,0 +1,13 @@
+#!/system/bin/sh
+bootanim=`sed -n -e'/debug\.sf\.nobootanimation/s/^.*=//p'  /system/build.prop`
+if [ -n $bootanim ]; then
+if [ "$bootanim" == "1" ]; then
+echo "Boot Animation is currently off"
+echo "Re-enabling Boot Animation"
+sed -i -e 's/debug\.sf\.nobootanimation=1//' /system/build.prop
+fi
+fi
+if [ -z $bootanim ]; then
+echo "Disabling Boot Animation"
+echo "debug.sf.nobootanimation=1" >> /system/build.prop
+fi

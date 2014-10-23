@@ -12,8 +12,7 @@ ifdef BUILDTYPE_EXPERIMENTAL
 	ROM_VERSION := $(shell date -u +%Y%m%d)-$(TARGET_PRODUCT_SHORT)-$(ROM_BUILDTYPE)
 endif
 ifdef BUILDTYPE_RELEASE
-	ROM_BUILDTYPE := Release
-	$(shell export AROMA_BUILD=true) 
+	ROM_BUILDTYPE := Release 
 	ROM_VERSION := $(PLATFORM_VERSION)-$(TARGET_PRODUCT_SHORT)
 endif
 
@@ -23,6 +22,9 @@ ifndef ROM_BUILDTYPE
 	ROM_BUILDTYPE := $(ROM_BUILDTYPE)-Aroma
 	endif
 	ROM_VERSION := $(shell date -u +%Y%m%d)-$(TARGET_PRODUCT_SHORT)-$(ROM_BUILDTYPE)
+endif
+ifeq ($(ROM_BUILDTYPE),Release)
+	$(shell export AROMA_BUILD=true)
 endif
 
 
