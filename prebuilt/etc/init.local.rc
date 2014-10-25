@@ -25,7 +25,7 @@ service plain-post-boot /system/bin/sh /system/etc/init.plain.kerneltweak.sh
     disabled
     oneshot
 
-on property:sys.boot_completed=1
+on property:init.svc.bootanim=running
     start plain-post-boot
 
 # adb over network
