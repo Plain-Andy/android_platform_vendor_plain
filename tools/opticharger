@@ -103,7 +103,7 @@ fi
 if [ -e "$1" ];
 then
     NAME=`basename $1`;
-    echo -e $CL_CYN"Optimizing"$CL_RST" $NAME...";
+    #echo -e $CL_CYN"Optimizing"$CL_RST" $NAME...";
 
     if [ "$2" != "" ];
     then
