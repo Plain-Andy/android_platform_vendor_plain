@@ -88,8 +88,12 @@ selectbox(
 		"bootanim.prop",
 
   	"Enable bootanimation?","",	2,	#-- Group 1
-		"Yes","",		1,	#-- selected.0 = 1
-		"No","",		0	#-- selected.0 = 2
+		"Yes","",		1,	#-- selected.1 = 1
+		"No","",		0,	#-- selected.1 = 2
+
+  	"User your own custom bootanimation?","Overwrites stock with custom from /sdcard/bootani/bootanimation.zip",	2,	#-- Group 1
+		"Yes","",		0,	#-- selected.2 = 1
+		"No","",		1	#-- selected.2 = 2
 );
 viewbox(
   "Ready To Install",

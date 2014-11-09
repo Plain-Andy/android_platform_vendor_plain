@@ -58,5 +58,16 @@ set_perm(0, 0, 0777, "/tmp/disable_bootanim.sh");
 run_program("/tmp/disable_bootanim.sh");
 else
 ui_print("@...Enabling Boot animations...");
+if
+file_getprop("/tmp/aroma/bootanim.prop","selected.2") != "2"
+then
+ui_print("@...Injecting custom boot animation...");
+package_extract_file("custom_bootanim.sh", "/tmp/custom_bootanim.sh");
+set_perm(0, 0, 0777, "/tmp/custom_bootanim.sh");
+run_program("/tmp/custom_bootanim.sh");
+else
+ui_print("@...Injecting stock boot animation...");
 endif;
+endif;
+
 
