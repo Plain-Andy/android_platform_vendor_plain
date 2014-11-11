@@ -1,0 +1,16 @@
+#!/system/bin/sh
+mount -o rw,remount /system
+if [ -e /sdcard/bootani/bootanimation.zip ]; then
+if [ ! -e /system/media/bootanimation-original ]; then
+cp /system/media/bootanimation.zip /system/media/bootanimation-original
+fi
+cp /sdcard/bootani/bootanimation.zip /system/media/bootanimation.zip
+fi
+
+if [ ! -e /sdcard/bootani/bootanimation.zip ]; then
+if [ -e /system/media/bootanimation-original ]; then
+rm  /system/media/bootanimation.zip
+cp  /system/media/bootanimation-original /system/media/bootanimation.zip
+fi
+fi
+mount -o ro,remount /system

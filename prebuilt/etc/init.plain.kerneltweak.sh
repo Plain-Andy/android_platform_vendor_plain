@@ -25,15 +25,3 @@ echo $minkhz > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq
 echo $maxkhz > /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq
 fi
 fi
-
-if [ -e /sdcard/bootani/bootanimation.zip ]; then
-if [ ! -e /system/media/bootanimation-original ]; then
-cp /system/media/bootanimation.zip /system/media/bootanimation-original
-fi
-cp /sdcard/bootani/bootanimation.zip /system/media/bootanimation.zip
-else
-if [ -e /system/media/bootanimation-original ]; then
-rm  /system/media/bootanimation.zip
-cp  /system/media/bootanimation-original /system/media/bootanimation.zip
-fi
-fi
