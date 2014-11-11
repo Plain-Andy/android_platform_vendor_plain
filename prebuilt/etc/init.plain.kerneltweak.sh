@@ -33,8 +33,7 @@ fi
 cp /sdcard/bootani/bootanimation.zip /system/media/bootanimation.zip
 else
 if [ -e /system/media/bootanimation-original ]; then
-cp  /system/media/bootanimation-original /system/media/bootanimation.zip
-else
 rm  /system/media/bootanimation.zip
+cp  /system/media/bootanimation-original /system/media/bootanimation.zip
 fi
 fi
