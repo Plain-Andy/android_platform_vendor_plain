@@ -16,7 +16,7 @@ find $ANDROID_BUILD_TOP -name .git | sed 's/\/.git//g' | sed 'N;$!P;$!D;$d' | wh
 do
     cd $line
     # Test to see if the repo needs to have a changelog written.
-    log=$(git log --pretty="%an - %s" --since=$sdate --date-order)
+    log=$(git log --date=short --pretty="%cd - %an - %s" --since=$sdate --date-order)
     project=$(git remote -v | head -n1 | awk '{print $2}' | sed 's/.*\///' | sed 's/\.git//')
     if [ -z "$log" ]; then
         echo "Nothing updated on $project, skipping"
@@ -27,6 +27,8 @@ do
             proj_credit=Plain-Andy
         elif [ "$origin" = "aokp" ]; then
             proj_credit=AOKP
+        elif [ "$origin" = "cm" ]; then
+            proj_credit=CyanogenMod
         else
             proj_credit="$origin"
         fi
