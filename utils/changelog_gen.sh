@@ -10,13 +10,16 @@ if [ -z "$sdate" ]; then
     echo "Please define a start date in mm/dd/yyyy format."
     read sdate
 fi
-
+echo "" > $ANDROID_BUILD_TOP/Changelog_$cdate.txt
+if [ -d $OUT ]; then
+echo "" > $OUT/system/etc/CHANGELOG.txt
+fi
 # Find the directories to log
 find $ANDROID_BUILD_TOP -name .git | sed 's/\/.git//g' | sed 'N;$!P;$!D;$d' | while read line
 do
     cd $line
     # Test to see if the repo needs to have a changelog written.
-    log=$(git log --date=short --pretty="%cd - %an - %s" --since=$sdate --date-order)
+    log=$(git log --date=short --pretty="%n%cd Committer: %cn Author: %an%n---Change:%s" --since=$sdate --date-order)
     project=$(git remote -v | head -n1 | awk '{print $2}' | sed 's/.*\///' | sed 's/\.git//')
     if [ -z "$log" ]; then
         echo "Nothing updated on $project, skipping"
@@ -33,12 +36,23 @@ do
             proj_credit="$origin"
         fi
         # Write the changelog
-        echo "$proj_credit Project name: $project" >> $ANDROID_BUILD_TOP/Changelog_$cdate.txt
+        echo "*--- ROM Source: $proj_credit ---*" >> $ANDROID_BUILD_TOP/Changelog_$cdate.txt
+        echo "-$project-" >> $ANDROID_BUILD_TOP/Changelog_$cdate.txt
+	if [ -d $OUT ]; then
+        echo "*--- ROM Source: $proj_credit ---*" >> $OUT/system/etc/CHANGELOG.txt
+        echo "-$project-" >> $OUT/system/etc/CHANGELOG.txt
+	fi
         echo "$log" | while read line
         do
-             echo "  - $line" >> $ANDROID_BUILD_TOP/Changelog_$cdate.txt
+             echo "$line" >> $ANDROID_BUILD_TOP/Changelog_$cdate.txt
+	if [ -d $OUT ]; then
+             echo "$line" >> $OUT/system/etc/CHANGELOG.txt
+	fi
         done
         echo "" >> $ANDROID_BUILD_TOP/Changelog_$cdate.txt
+	if [ -d $OUT ]; then
+        echo "" >> $OUT/system/etc/CHANGELOG.txt
+	fi
     fi
 done
 

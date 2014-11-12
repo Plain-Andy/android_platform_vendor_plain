@@ -99,6 +99,9 @@ echo -e $CL_CYN"Unpacking $OTAPACKAGE..."$CL_RST
 unzip $QUIET $OTAPACKAGE
 echo -e
 
+# Add weekly changelog
+echo -e $CL_CYN"Injecting weekly changelog... "$CL_RST
+. $ANDROID_BUILD_TOP/vendor/plain/utils/changelog_gen.sh $(date -d "1 week ago" '+%m-%d-%Y') > /dev/null
 
 # Add Aroma
 if [ -n "$AROMA_BUILD" ]
@@ -118,7 +121,6 @@ rm $REPACK/ota/META-INF/com/google/android/aroma-device-script
 fi
 cp $ANDROID_BUILD_TOP/vendor/plain/tools/aroma/aroma-script $REPACK/ota/META-INF/com/google/android/aroma-script
 cd $REPACK/ota/META-INF/com/google/android/
-. $ANDROID_BUILD_TOP/vendor/plain/utils/changelog_gen.sh $(date -d "1 week ago" '+%m-%d-%Y') > /dev/null
 cp $ANDROID_BUILD_TOP/Changelog_$(date +"%m_%d_%Y").txt ./aroma/changelog.txt
 awk '/# @AROMASCRIPT@/{system("cat aroma-script");next}1' $REPACK/ota/META-INF/com/google/android/updater-script > $REPACK/ota/META-INF/com/google/android/temp
 rm $REPACK/ota/META-INF/com/google/android/updater-script
@@ -220,16 +222,6 @@ rm -rf $REPACK/ota/system/etc/recovery-resource.dat
 # Strip modules
 [ -d $REPACK/ota/system/lib/modules ] && \
         find $REPACK/ota/system/lib/modules -name "*.ko" -print0 | xargs -0 arm-eabi-strip --strip-unneeded
-
-if [ "$PLAIN_CHANGELOG" = true ]
-then
-# Add weekly changelog
-. $ANDROID_BUILD_TOP/vendor/plain/utils/changelog_gen.sh $(date -d "1 week ago" '+%m-%d-%Y') > /dev/null
-echo -e "Created weekly Changelog_"$(date +"%m_%d_%Y")".txt at top of source"
-else
-printf "No changelog..."
-echo -e
-fi
 
 cp -r $ANDROID_BUILD_TOP/vendor/plain/prebuilt/apk/* $REPACK/ota/system/app
 
