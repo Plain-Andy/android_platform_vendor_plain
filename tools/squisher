@@ -4,6 +4,7 @@
 #
 # cyanogen
 # AOKP
+clear
 if [ -z "$AROMA_BUILD" ]
 then
 AROMA_BUILD=$1
