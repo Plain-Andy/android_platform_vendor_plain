@@ -36,8 +36,8 @@ do
             proj_credit="$origin"
         fi
         # Write the changelog
-        echo "<b><p>*--- ROM Source: $proj_credit ---*</p>" >> $ANDROID_BUILD_TOP/Changelog_$cdate.htm
-        echo "<p>-$project-</p></b>" >> $ANDROID_BUILD_TOP/Changelog_$cdate.htm
+        echo "<b><p>*--- ROM Source: $proj_credit ---*</p></b>" >> $ANDROID_BUILD_TOP/Changelog_$cdate.htm
+        echo "<b><p>-$project-</p></b>" >> $ANDROID_BUILD_TOP/Changelog_$cdate.htm
 	if [ -d $OUT ]; then
         echo "<b><p>*--- ROM Source: $proj_credit ---*</p>" >> $OUT/system/etc/CHANGELOG.txt
         echo "<p>-$project-</p></b>" >> $OUT/system/etc/CHANGELOG.txt

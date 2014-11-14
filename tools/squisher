@@ -100,9 +100,14 @@ unzip $QUIET $OTAPACKAGE
 echo -e
 
 # Add weekly changelog
+if [ -n "$BUILDTYPE_RELEASE" ]
+then
+echo -e $CL_CYN"Injecting release changelog... "$CL_RST
+. $ANDROID_BUILD_TOP/vendor/plain/utils/changelog_gen.sh $(date -d "1 month ago" '+%m-%d-%Y') > /dev/null
+else
 echo -e $CL_CYN"Injecting weekly changelog... "$CL_RST
 . $ANDROID_BUILD_TOP/vendor/plain/utils/changelog_gen.sh $(date -d "1 week ago" '+%m-%d-%Y') > /dev/null
-
+fi
 # Add Aroma
 if [ -n "$AROMA_BUILD" ]
 then
@@ -121,7 +126,7 @@ rm $REPACK/ota/META-INF/com/google/android/aroma-device-script
 fi
 cp $ANDROID_BUILD_TOP/vendor/plain/tools/aroma/aroma-script $REPACK/ota/META-INF/com/google/android/aroma-script
 cd $REPACK/ota/META-INF/com/google/android/
-sed 's.<p>..g' $ANDROID_BUILD_TOP/Changelog_$(date +"%m_%d_%Y").htm | sed 's.</p>..g' > ./aroma/changelog.txt
+sed 's.<b><p>.<b><@center>.g' $ANDROID_BUILD_TOP/Changelog_$(date +"%m_%d_%Y").htm | sed 's.</p></b>.</b></@>.g' | sed 's.<p>.<*>.g' | sed 's.</p>.</*>.g' > ./aroma/changelog.txt
 awk '/# @AROMASCRIPT@/{system("cat aroma-script");next}1' $REPACK/ota/META-INF/com/google/android/updater-script > $REPACK/ota/META-INF/com/google/android/temp
 rm $REPACK/ota/META-INF/com/google/android/updater-script
 mv $REPACK/ota/META-INF/com/google/android/temp $REPACK/ota/META-INF/com/google/android/updater-script
@@ -184,6 +189,10 @@ MODVERSION=Plain-Andy-`sed -n -e'/ro\.plain\.version/s/^.*=//p' $OUT/system/buil
 else
 MODVERSION=Plain-Andy-`sed -n -e'/ro\.plain\.version/s/^.*=//p' $OUT/system/build.prop`
 fi
+if [ -n "$BUILDTYPE_RELEASE" ]
+then
+MODVERSION=Release-`sed -n -e'/ro\.plain\.version/s/^.*=//p' $OUT/system/build.prop`
+fi
 TARGET_PRODUCT_FINAL=`echo -e $TARGET_PRODUCT | cut -d '_' -f2`
 echo -e $CL_CYN"MODVERSION: $MODVERSION"$CL_RST
 OUTFILE=$OUT/$MODVERSION.zip
@@ -222,8 +231,6 @@ rm -rf $REPACK/ota/system/etc/recovery-resource.dat
 # Strip modules
 [ -d $REPACK/ota/system/lib/modules ] && \
         find $REPACK/ota/system/lib/modules -name "*.ko" -print0 | xargs -0 arm-eabi-strip --strip-unneeded
-
-cp -r $ANDROID_BUILD_TOP/vendor/plain/prebuilt/apk/* $REPACK/ota/system/app
 
 # Pack it up and sign
 printf "Zipping package..."
