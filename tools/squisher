@@ -105,9 +105,11 @@ if [ -n "$BUILDTYPE_RELEASE" ]
 then
 echo -e $CL_CYN"Injecting release changelog... "$CL_RST
 . $ANDROID_BUILD_TOP/vendor/plain/utils/changelog_gen.sh $(date -d "1 month ago" '+%m-%d-%Y') > /dev/null
+cp $OUT/CHANGELOG.txt $REPACK/ota/system/etc/CHANGELOG.txt
 else
 echo -e $CL_CYN"Injecting weekly changelog... "$CL_RST
 . $ANDROID_BUILD_TOP/vendor/plain/utils/changelog_gen.sh $(date -d "1 week ago" '+%m-%d-%Y') > /dev/null
+cp $OUT/CHANGELOG.txt $REPACK/ota/system/etc/CHANGELOG.txt
 fi
 # Add Aroma
 if [ -n "$AROMA_BUILD" ]

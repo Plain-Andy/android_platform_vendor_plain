@@ -38,21 +38,15 @@ do
         # Write the changelog
         echo "<b><p>*--- ROM Source: $proj_credit ---*</p></b>" >> $ANDROID_BUILD_TOP/Changelog_$cdate.htm
         echo "<b><p>-$project-</p></b>" >> $ANDROID_BUILD_TOP/Changelog_$cdate.htm
-	if [ -d $OUT ]; then
-        echo "<b><p>*--- ROM Source: $proj_credit ---*</p>" >> $OUT/system/etc/CHANGELOG.txt
-        echo "<p>-$project-</p></b>" >> $OUT/system/etc/CHANGELOG.txt
-	fi
+        echo "<b><p>*--- ROM Source: $proj_credit ---*</p>" >> $OUT/CHANGELOG.txt
+        echo "<p>-$project-</p></b>" >> $OUT/CHANGELOG.txt
         echo "$log" | while read line
         do
              echo "<p>$line</p>" >> $ANDROID_BUILD_TOP/Changelog_$cdate.htm
-	if [ -d $OUT ]; then
-             echo "<p>$line</p>" >> $OUT/system/etc/CHANGELOG.txt
-	fi
+             echo "<p>$line</p>" >> $OUT/CHANGELOG.txt
         done
         echo "" >> $ANDROID_BUILD_TOP/Changelog_$cdate.htm
-	if [ -d $OUT ]; then
-        echo "" >> $OUT/system/etc/CHANGELOG.txt
-	fi
+        echo "" >> $OUT/CHANGELOG.txt
     fi
 done
 
