@@ -100,17 +100,6 @@ echo -e $CL_CYN"Unpacking $OTAPACKAGE..."$CL_RST
 unzip $QUIET $OTAPACKAGE
 echo -e
 
-# Add weekly changelog
-if [ -n "$BUILDTYPE_RELEASE" ]
-then
-echo -e $CL_CYN"Injecting release changelog... "$CL_RST
-. $ANDROID_BUILD_TOP/vendor/plain/utils/changelog_gen.sh $(date -d "1 month ago" '+%m-%d-%Y') > /dev/null
-cp $OUT/CHANGELOG.txt $REPACK/ota/system/etc/CHANGELOG.txt
-else
-echo -e $CL_CYN"Injecting weekly changelog... "$CL_RST
-. $ANDROID_BUILD_TOP/vendor/plain/utils/changelog_gen.sh $(date -d "1 week ago" '+%m-%d-%Y') > /dev/null
-cp $OUT/CHANGELOG.txt $REPACK/ota/system/etc/CHANGELOG.txt
-fi
 # Add Aroma
 if [ -n "$AROMA_BUILD" ]
 then
@@ -153,37 +142,7 @@ sed -i -e "s|@DATE@|$AROMADATE|" $REPACK/ota/META-INF/com/google/android/aroma-c
 echo
 fi
 
-
-# Move all apks to the same directory so xargs can
-# use also with framework-res.apk. This allow process
-# framework-res.apk in parallel with other apks
-mkdir -p $REPACK/parallel
-cd $REPACK/parallel
-cp $REPACK/ota/system/framework/framework-res.apk .
-cp $REPACK/ota/system/app/*.apk .
-
-# Do optimization in parallel
-find ./ -name \*.apk | $XARGS $OPTICHARGER
-
-# Move optimized apks to repack directory
-mv -f $REPACK/parallel/framework-res.apk $REPACK/ota/system/framework/framework-res.apk
-mv -f $REPACK/parallel/*.apk $REPACK/ota/system/app/
-
-# Optimize /priv-app/
-cp $REPACK/ota/system/priv-app/*.apk .
-find ./ -name \*.apk | $XARGS $OPTICHARGER
-mv -f $REPACK/parallel/*.apk $REPACK/ota/system/priv-app/
-
-# Return to directory
-cd $REPACK/ota
-rm -rf $REPACK/parallel
 )
-
-# Fix build.prop
-$SED -i \
-        -e '/ro\.kernel\.android\.checkjni/d' \
-        -e '/ro\.build\.type/s/eng/user/' \
-        $REPACK/ota/system/build.prop
 
 # Determine what to name the new signed package
 if [ -n "$AROMA_BUILD" ]
@@ -199,41 +158,6 @@ fi
 TARGET_PRODUCT_FINAL=`echo -e $TARGET_PRODUCT | cut -d '_' -f2`
 echo -e $CL_CYN"MODVERSION: $MODVERSION"$CL_RST
 OUTFILE=$OUT/$MODVERSION.zip
-
-# Delete unnecessary binaries
-( cd $REPACK/ota/system/bin; echo -e $DELETE_BINS | xargs rm -f; )
-
-# Delete unnecessary libraries
-( cd $REPACK/ota/system/lib; echo -e $DELETE_LIBS | xargs rm -f; )
-
-# Delete Offline charging mode files
-( cd $REPACK/ota/system/media; echo -e $DELETE_MEDIA | xargs rm -f; )
-
-if [ "$TARGET_PRODUCT_FINAL" != "infuse4g" ]
-then
-# No need for modem.bin
-rm -f $REPACK/ota/modem.bin
-fi
-
-# No need for media/video
-rm -rf $REPACK/ota/system/media/video
-
-# Delete Unnecessary Fonts
-( cd $REPACK/ota/system/fonts; echo -e $DELETE_FONTS | xargs rm -f; )
-
-# No need for tts
-rm -rf $REPACK/ota/system/tts
-
-# No need for srec
-rm -rf $REPACK/ota/system/usr/srec
-
-# No need for recovery
-rm -rf $REPACK/ota/recovery
-rm -rf $REPACK/ota/system/etc/recovery-resource.dat
-
-# Strip modules
-[ -d $REPACK/ota/system/lib/modules ] && \
-        find $REPACK/ota/system/lib/modules -name "*.ko" -print0 | xargs -0 arm-eabi-strip --strip-unneeded
 
 # Pack it up and sign
 printf "Zipping package..."
