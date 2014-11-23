@@ -1,51 +1,51 @@
 if
 file_getprop("/tmp/aroma/systemapk.prop","item.1.1") != "1"
 then
-delete("/system/app/Browser.apk");
+delete_recursive("/system/app/Browser");
 else
 ui_print("@	Installing Browser");
 endif;
 if
 file_getprop("/tmp/aroma/systemapk.prop","item.1.2") != "1"
 then
-delete("/system/app/Calculator.apk");
+delete_recursive("/system/app/Calculator");
 else
 ui_print("@	Installing Calculator");
 endif;
 if
 file_getprop("/tmp/aroma/systemapk.prop","item.1.3") != "1"
 then
-delete("/system/app/Calendar.apk");
+delete_recursive("/system/app/Calendar");
 else
 ui_print("@	Installing Calendar");
 endif;
 if
 file_getprop("/tmp/aroma/systemapk.prop","item.1.4") != "1"
 then
-delete("/system/app/DeskClock.apk");
+delete_recursive("/system/app/DeskClock");
 else
 ui_print("@	Installing Desk Clock");
 endif;
 if
 file_getprop("/tmp/aroma/systemapk.prop","item.1.5") != "1"
 then
-delete("/system/app/Email.apk");
+delete_recursive("/system/app/Email");
 else
 ui_print("@	Installing Email");
 endif;
 if
 file_getprop("/tmp/aroma/systemapk.prop","item.1.6") != "1"
 then
-delete("/system/app/NoiseField.apk");
-delete("/system/app/PhaseBeam.apk");
-delete("/system/app/BlueBalls.apk");
+delete_recursive("/system/app/NoiseField");
+delete_recursive("/system/app/PhaseBeam");
+delete_recursive("/system/app/BlueBalls");
 else
 ui_print("@	Installing Live Wallpapers");
 endif;
 if
 file_getprop("/tmp/aroma/systemapk.prop","item.1.7") != "1"
 then
-delete("/system/app/SlimFileManager.apk");
+delete_recursive("/system/app/SlimFileManager");
 else
 ui_print("@	Installing Slim File Manager");
 endif;
