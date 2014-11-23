@@ -74,18 +74,6 @@ PRODUCT_PACKAGES += \
 # Add our overlays
 PRODUCT_PACKAGE_OVERLAYS += vendor/plain/overlay/common
 
-# Qualcomm Optimized Dalvik
-LOCAL_PATH:= vendor/plain/prebuilt
-
-ifneq ($(filter msm8610 msm8x26 msm8226 msm8x74 msm8974 msm8960 msm8660 msm7627a msm7630_surf apq8084 mpq8092,$(TARGET_BOARD_PLATFORM)),)
-PRODUCT_COPY_FILES += \
-        $(LOCAL_PATH)/bin/dalvikvm:system/bin/dalvikvm \
-        $(LOCAL_PATH)/bin/dexopt:system/bin/dexopt \
-        $(LOCAL_PATH)/lib/libcutils.so:system/lib/libcutils.so \
-        $(LOCAL_PATH)/lib/libdvm.so:system/lib/libdvm.so \
-        $(LOCAL_PATH)/lib/libqc-opt.so:system/lib/libqc-opt.so
-endif
-
 # Extra recovery tools for CWM 
 PRODUCT_PACKAGES += \
     recovery_e2fsck \
@@ -93,10 +81,3 @@ PRODUCT_PACKAGES += \
     recovery_tune2fs \
     mount.exfat_static \
     minivold
-
-## Stagefright FFMPEG plugin
-PRODUCT_PACKAGES += \
-    libstagefright_soft_ffmpegadec \
-    libstagefright_soft_ffmpegvdec \
-    libFFmpegExtractor \
-    libnamparser
