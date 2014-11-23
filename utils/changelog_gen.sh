@@ -1,6 +1,6 @@
 #!/bin/sh
 
-sdate=${1}
+sdate=$(date -d "1 month ago" '+%m-%d-%Y')
 cdate=`date +"%m_%d_%Y"`
 #rdir=`pwd`
 
@@ -9,10 +9,6 @@ if [ -z "$sdate" ]; then
     echo "!!!!---- Start date not defined ----!!!!"
     echo "Please define a start date in mm/dd/yyyy format."
     read sdate
-fi
-echo "" > $ANDROID_BUILD_TOP/Changelog_$cdate.htm
-if [ -d $OUT ]; then
-echo "" > $OUT/system/etc/CHANGELOG.txt
 fi
 # Find the directories to log
 find $ANDROID_BUILD_TOP -name .git | sed 's/\/.git//g' | sed 'N;$!P;$!D;$d' | while read line
@@ -38,15 +34,15 @@ do
         # Write the changelog
         echo "<b><p>*--- ROM Source: $proj_credit ---*</p></b>" >> $ANDROID_BUILD_TOP/Changelog_$cdate.htm
         echo "<b><p>-$project-</p></b>" >> $ANDROID_BUILD_TOP/Changelog_$cdate.htm
-        echo "<b><p>*--- ROM Source: $proj_credit ---*</p>" >> $OUT/CHANGELOG.txt
-        echo "<p>-$project-</p></b>" >> $OUT/CHANGELOG.txt
+        echo "<b><p>*--- ROM Source: $proj_credit ---*</p>" >> $OUT/system/etc/CHANGELOG.txt
+        echo "<p>-$project-</p></b>" >> $OUT/system/etc/CHANGELOG.txt
         echo "$log" | while read line
         do
              echo "<p>$line</p>" >> $ANDROID_BUILD_TOP/Changelog_$cdate.htm
-             echo "<p>$line</p>" >> $OUT/CHANGELOG.txt
+             echo "<p>$line</p>" >> $OUT/system/etc/CHANGELOG.txt
         done
         echo "" >> $ANDROID_BUILD_TOP/Changelog_$cdate.htm
-        echo "" >> $OUT/CHANGELOG.txt
+        echo "" >> $OUT/system/etc/CHANGELOG.txt
     fi
 done
 
