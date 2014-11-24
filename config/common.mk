@@ -11,19 +11,15 @@ PRODUCT_PROPERTIES_OVERRIDE += \
 	ro.com.android.dataroaming=false
 
 PRODUCT_PROPERTY_OVERRIDES += \
-	persist.sys.root_access=1 \
+	ro.build.selinux=1 \
+	persist.sys.root_access=3 \
 	persist.sys.strictmode.visual=0 \
 	persist.sys.strictmode.disable=1 \
         ro.max.fling_velocity=14000 \
         ro.min.fling_velocity=9000 \
         persist.sys.scrollingcache=3
 
-# enable ADB authentication if not on eng build
-ifneq ($(TARGET_BUILD_VARIANT),eng)
-ADDITIONAL_DEFAULT_PROPERTIES += ro.adb.secure=1
-else
 ADDITIONAL_DEFAULT_PROPERTIES += ro.adb.secure=0
-endif
 
 # Embed SuperUser
 SUPERUSER_EMBEDDED := true
@@ -45,10 +41,11 @@ PRODUCT_COPY_FILES += \
 
 # Init script file with plain extras
 PRODUCT_COPY_FILES += \
-    vendor/plain/prebuilt/etc/init.local.rc:root/init.plain.rc \
+    vendor/plain/prebuilt/etc/init.local.rc:root/init.slim.rc \
     vendor/plain/prebuilt/etc/init.plain.kerneltweak.sh:/system/etc/init.plain.kerneltweak.sh \
     vendor/plain/prebuilt/bin/plaintweak:system/bin/plaintweak \
-    vendor/plain/prebuilt/etc/init.d/99customanimation:/system/etc/init.d/99customanimation
+    vendor/plain/prebuilt/etc/init.d/99customanimation:/system/etc/init.d/99customanimation \
+    external/koush/Superuser/init.superuser.rc:root/init.superuser.rc
 
 # Enable SIP and VoIP on all targets
 PRODUCT_COPY_FILES += \
@@ -65,6 +62,8 @@ PRODUCT_COPY_FILES += \
 
 # Theme Manager
 -include vendor/plain/config/themes.mk
+
+-include vendor/plain/sepolicy/sepolicy.mk
 
 # CM Hardware Abstraction Framework
 PRODUCT_PACKAGES += \
