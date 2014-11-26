@@ -144,12 +144,8 @@ fi
 )
 
 # Determine what to name the new signed package
-if [ -n "$AROMA_BUILD" ]
-then
-MODVERSION=Plain-Andy-`sed -n -e'/ro\.plain\.version/s/^.*=//p' $OUT/system/build.prop`-Aroma
-else
-MODVERSION=Plain-Andy-`sed -n -e'/ro\.plain\.version/s/^.*=//p' $OUT/system/build.prop`
-fi
+
+MODVERSION=Plain-Andy-`sed -n -e'/ro\.plain\.version/s/^.*=//p' $OUT/system/build.prop`-`sed -n -e'/rom\.buildtype/s/^.*=//p' $OUT/system/build.prop` 
 if [ -n "$BUILDTYPE_RELEASE" ]
 then
 MODVERSION=Release-`sed -n -e'/ro\.plain\.version/s/^.*=//p' $OUT/system/build.prop`
