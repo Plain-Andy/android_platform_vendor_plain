@@ -57,13 +57,12 @@ PRODUCT_COPY_FILES += \
 # Versioning
 -include vendor/plain/config/version.mk
 
-# Theme Manager
--include vendor/plain/config/nfc_enhanced.mk
-
-# Theme Manager
--include vendor/plain/config/themes.mk
+# Chainfire SuperSU v2.36
+-include vendor/plain/config/supersu.mk
 
 -include vendor/plain/sepolicy/sepolicy.mk
+
+-include vendor/plain/config/nfc_enhanced.mk
 
 # CM Hardware Abstraction Framework
 PRODUCT_PACKAGES += \
