@@ -18,11 +18,8 @@ for line in $frequencies; do
 	printf "${line_counter}) ${line}\n"
 done
 IFS=$OLD_IFS
-echo "Choose number selection[0 or 99 = exit]:"
+echo "Choose number selection[0 = default or 99 = exit]:"
 read input
-if [ "$input" == "0" ];then
-exit
-fi
 if [ "$input" == "99" ];then
 exit
 fi
@@ -30,8 +27,12 @@ if [ "$input" -gt "$line_counter" ];then
 echo "Invalid selection: Aborting script"
 exit
 fi
-maxkhz=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies | sed 's/ /\n/g' | sed '$d' | tail -n 5 | head -n$input | tail -n1)
+if [ "$input" == "0" ];then
+echo 'setprop maxkhz '$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies | sed 's/ /\n/g' | sed '$d' | tail -n 1 | head -n 1) > /$extsd/plaintweak
+else
+maxkhz=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies | sed 's/ /\n/g' | sed '$d' | tail -n 5 | head -n $input | tail -n 1)
 echo 'setprop maxkhz '$maxkhz > /$extsd/plaintweak
+fi
 clear
 echo "Min CPU Clock selection:"
 echo 
@@ -45,11 +46,8 @@ for line in $frequencies; do
 	printf "${line_counter}) ${line}\n"
 done
 IFS=$OLD_IFS
-echo "Choose number selection[0 or 99 = exit]:"
+echo "Choose number selection[0 = default or 99 = exit]:"
 read input
-if [ "$input" == "0" ];then
-exit
-fi
 if [ "$input" == "99" ];then
 exit
 fi
@@ -57,8 +55,12 @@ if [ "$input" -gt "$line_counter" ];then
 echo "Invalid selection: Aborting script"
 exit
 fi
-minkhz=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies | sed 's/ /\n/g' | sed '$d' | head -n 4 | head -n$input | tail -n1)
+if [ "$input" == "0" ];then
+echo 'setprop minkhz '$(cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq) > /$extsd/plaintweak
+else
+minkhz=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies | sed 's/ /\n/g' | sed '$d' | head -n 4 | head -n $input | tail -n 1)
 echo 'setprop minkhz '$minkhz >> /$extsd/plaintweak
+fi
 clear
 echo "Governor selection:"
 echo
@@ -72,11 +74,8 @@ for line in $governors; do
 	printf "${line_counter}) ${line}\n"
 done
 IFS=$OLD_IFS
-echo "Choose number selection[0 or 99 = exit]:"
+echo "Choose number selection[0 = default or 99 = exit]:"
 read input
-if [ "$input" == "0" ];then
-exit
-fi
 if [ "$input" == "99" ];then
 exit
 fi
@@ -84,8 +83,12 @@ if [ "$input" -gt "$line_counter" ];then
 echo "Invalid selection: Aborting script"
 exit
 fi
-gov=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors | sed 's/ /\n/g' | sed '$d' | head -n$input | tail -n1)
+if [ "$input" == "0" ];then
+echo 'setprop gov '$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor) >> /$extsd/plaintweak
+else
+gov=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors | sed 's/ /\n/g' | sed '$d' | head -n $input | tail -n 1)
 echo 'setprop gov '$gov >> /$extsd/plaintweak
+fi
 clear
 echo "IO Scheduler selection:"
 echo 
@@ -99,11 +102,8 @@ for line in $schedulers; do
 	printf "${line_counter}) ${line}\n"
 done
 IFS=$OLD_IFS
-echo "Choose number selection[0 or 99 = exit]:"
+echo "Choose number selection[0 = default or 99 = exit]:"
 read input
-if [ "$input" == "0" ];then
-exit
-fi
 if [ "$input" == "99" ];then
 exit
 fi
@@ -111,11 +111,15 @@ if [ "$input" -gt "$line_counter" ];then
 echo "Invalid selection: Aborting script"
 exit
 fi
-scheduler=$(cat /sys/block/mmcblk0/queue/scheduler | sed 's/[[]//g' | sed 's/[]]//g' | sed 's/ /\n/g' | sed '$d' | sed 's/ //g' | head -n$input | tail -n1)
+if [ "$input" == "0" ];then
+echo 'setprop scheduler '$(cat /sys/block/mmcblk0/queue/scheduler | sed 's/.*[[]//g' | sed 's/[]].*//g') >> /$extsd/plaintweak
+else
+scheduler=$(cat /sys/block/mmcblk0/queue/scheduler | sed 's/[[]//g' | sed 's/[]]//g' | sed 's/ /\n/g' | sed '$d' | sed 's/ //g' | head -n $input | tail -n 1)
 echo 'setprop scheduler '$scheduler >> /$extsd/plaintweak
+fi
 clear
 clear
-echo "TCP COngestion Control selection:"
+echo "TCP Congestion Control selection:"
 echo 
 tcpcong=$(cat /proc/sys/net/ipv4/tcp_available_congestion_control | sed 's/ /\n/g')
 # Load text file lines into a bash array.
@@ -127,11 +131,8 @@ for line in $tcpcong; do
 	printf "${line_counter}) ${line}\n"
 done
 IFS=$OLD_IFS
-echo "Choose number selection[0 or 99 = exit]:"
+echo "Choose number selection[0 = default or 99 = exit]:"
 read input
-if [ "$input" == "0" ];then
-exit
-fi
 if [ "$input" == "99" ];then
 exit
 fi
@@ -139,5 +140,10 @@ if [ "$input" -gt "$line_counter" ];then
 echo "Invalid selection: Aborting script"
 exit
 fi
-tcpcong=$(cat /proc/sys/net/ipv4/tcp_available_congestion_control | sed 's/ /\n/g' | head -n$input | tail -n1)
+if [ "$input" == "0" ];then
+echo 'setprop tcpcong '$(cat /proc/sys/net/ipv4/tcp_congestion_control) >> /$extsd/plaintweak
+else
+tcpcong=$(cat /proc/sys/net/ipv4/tcp_available_congestion_control | sed 's/ /\n/g' | head -n $input | tail -n 1)
 echo 'setprop tcpcong '$tcpcong >> /$extsd/plaintweak
+fi
+. /system/etc/init.plain.kerneltweak.sh
