@@ -4,12 +4,7 @@ then
 cp /sdcard/plaintweak /data/local/tmp/plaintweak
 chmod 0775 /data/local/tmp/plaintweak
 . /data/local/tmp/plaintweak
-tcpcong=$(getprop tcpcong)
-scheduler=$(getprop scheduler)
-gov=$(getprop gov)
-minkhz=$(getprop minkhz)
-maxkhz=$(getprop maxkhz)
-#Define them twice for compatibility with older plain-tweak files and settings->about 
+
 if [ -z $tcpcong ]
 then
 setprop tcpcong $(cat /proc/sys/net/ipv4/tcp_congestion_control)
