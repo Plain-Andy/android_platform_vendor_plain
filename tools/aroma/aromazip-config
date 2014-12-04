@@ -1,0 +1,108 @@
+### LICENSE:
+#
+# Copyright (C) 2011 Ahmad Amarullah ( http://amarullz.com/ )
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+ini_set("rom_name",             "Plain-Tweak Installer");
+ini_set("rom_version",          "@DATE@ Add-On");
+ini_set("rom_author",           "Snuzzo");
+ini_set("rom_device",           "@AROMA_DEVICE@");
+
+ini_set("customkeycode_down",   "114");
+ini_set("customkeycode_select", "116");
+ini_set("customkeycode_menu",   "115");
+calibrate("1.2011","52","1.4256","45", "yes");
+##
+# Show Animated Splash
+#
+anisplash(
+#  #-- Number of Loop
+    4,
+  
+  #-- Frame 1 [ Image, duration in millisecond ]. <AROMA Resource Dir>/splash/a[1..6].png
+    "splash/a1", 500,
+    "splash/a2", 30,
+    "splash/a3", 30,
+    "splash/a4", 30,
+    "splash/a5", 30,
+    "splash/a6", 30
+);
+theme("touchwiz");
+#
+# Set Small Font to Support all fonts
+#
+fontresload( "0", "ttf/Roboto-Regular.ttf;ttf/DroidSansFallback.ttf;", "12" ); #-- Use sets of font (Font Family)
+fontresload( "1", "ttf/Roboto-Regular.ttf;ttf/DroidSansFallback.ttf;", "14" ); #-- Use sets of font (Font Family)
+
+viewbox(
+  "Welcome",
+    "\n\n\n\n\n"+
+    "You're about to flash : <#33b5e5>\n\n"+
+    ini_get("rom_name") + "</#>\n\n"+
+    "by : <#33b5e5>\n\n"+ 
+    ini_get("rom_author") + "</#>\n\n\n"+ 
+    "  VERSION : <#33b5e5>" + ini_get("rom_version") + "</#>\n\n"+
+    "  DEVICE : <#33b5e5>" + ini_get("rom_device") + "</#>\n\n"+
+    "  UPDATED : <#33b5e5>@DATE@</#>\n\n\n"+
+    "Press Next to continue the installation...",
+  "icons/info"
+);
+exec("/sbin/busybox","mount","/system");
+#@AROMA_DEVICE_CONFIG@
+selectbox(
+	"Boot Animations Selection",
+		"Bootanimation mods",
+		"@personalize",
+		"bootanim.prop",
+
+  	"Enable bootanimation?","",	2,	#-- Group 1
+		"Yes","",		1,	#-- selected.0 = 1
+		"No","",		0	#-- selected.0 = 2
+);
+viewbox(
+  "Ready To Install",
+  "All information has been collected for installation.\n\n"+
+  "Click Next To Start Installation. This is the last chance to cancel!",
+  "icons/info"
+);
+
+install(
+  "Installing",
+  "Installing " + ini_get("rom_name") + " " + ini_get("rom_version") + 
+  "...\nPlease Wait Until it's Finished...",
+  "redicons/install"
+);
+
+# Set Next Text fo Finish
+ini_set("text_next", "Finish");
+
+viewbox(
+  "Installation Completed",
+  "<#080>Congratulations...</#>\n\n"+
+   ini_get("rom_name") + " " + ini_get("rom_version") + " has been installed successfully.\n\n"+
+  "Press Finish, and Reboot your phone.",
+  "icons/info"
+);
+if
+  confirm(
+      "Reboot",
+      "Reboot Now",
+      "icons/info",
+      "Reboot",
+      "No"
+  )=="yes"
+then
+  reboot("onfinish");
+endif;

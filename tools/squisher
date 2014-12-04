@@ -4,11 +4,7 @@
 #
 # cyanogen
 # AOKP
-clear
-if [ -z "$AROMA_BUILD" ]
-then
-AROMA_BUILD=$1
-fi
+ROM_BUILDTYPE=$1
 
 . $ANDROID_BUILD_TOP/vendor/plain/tools/colors
 
@@ -107,7 +103,7 @@ echo -e $CL_CYN"Injecting weekly changelog... "$CL_RST
 cp $OUT/CHANGELOG.txt $REPACK/ota/system/etc/CHANGELOG.txt
 fi
 # Add Aroma
-if [ -n "$AROMA_BUILD" ]
+if [ -n "$2" ]
 then
 echo -e $CL_GRN"Unpacking Aroma..."$CL_RST
 AROMADATE=$(date +"%Y-%m-%d")
@@ -181,8 +177,12 @@ $SED -i \
         $REPACK/ota/system/build.prop
 
 # Determine what to name the new signed package
-
-MODVERSION=Plain-Andy-`sed -n -e'/ro\.plain\.version/s/^.*=//p' $OUT/system/build.prop`-`sed -n -e'/rom\.buildtype/s/^.*=//p' $OUT/system/build.prop` 
+if [ -n "$2" ]
+then
+MODVERSION=`sed -n -e'/ro\.modversion/s/^.*=//p' $OUT/system/build.prop`-`sed -n -e'/ro\.plain\.version/s/^.*=//p' $OUT/system/build.prop`-Aroma
+else
+MODVERSION=`sed -n -e'/ro\.modversion/s/^.*=//p' $OUT/system/build.prop`-`sed -n -e'/ro\.plain\.version/s/^.*=//p' $OUT/system/build.prop`-$ROM_BUILDTYPE
+fi
 if [ -n "$BUILDTYPE_RELEASE" ]
 then
 MODVERSION=Release-`sed -n -e'/ro\.plain\.version/s/^.*=//p' $OUT/system/build.prop`

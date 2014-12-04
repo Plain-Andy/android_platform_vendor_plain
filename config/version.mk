@@ -20,7 +20,7 @@ ifndef ROM_BUILDTYPE
 	ROM_BUILDTYPE := Unofficial
 endif
 
-ROM_VERSION := $(shell date -u +%Y%m%d)-$(TARGET_PRODUCT_SHORT)
+ROM_VERSION := $(shell date -u +%m.%d).$(BUILD_ID)
 
 ifdef AROMA_BUILD
 	ROM_BUILDTYPE := $(ROM_BUILDTYPE)-Aroma
