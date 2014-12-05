@@ -60,7 +60,7 @@ then
 setprop maxkhz $(cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq)
 else
 setprop maxkhz $maxkhz
-echo $maxkhz > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq
+echo $maxkhz > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 if [ -d "/sys/devices/system/cpu/cpu1/" ]; then
 echo $maxkhz > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq
 fi
