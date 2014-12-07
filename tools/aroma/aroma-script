@@ -52,13 +52,18 @@ endif;
 if
 file_getprop("/tmp/aroma/bootanim.prop","selected.1") != "1"
 then
+ui_print("@...Injecting custom LCD density...");
+else
+ui_print("@...Using stock LCD density...");
+endif;
+if
+file_getprop("/tmp/aroma/bootanim.prop","selected.2") != "1"
+then
 ui_print("@...Disabling Boot animations...");
-package_extract_file("disable_bootanim.sh", "/tmp/disable_bootanim.sh");
-set_perm(0, 0, 0777, "/tmp/disable_bootanim.sh");
-run_program("/tmp/disable_bootanim.sh");
 else
 ui_print("@...Enabling Boot animations...");
-package_extract_file("enable_bootanim.sh", "/tmp/enable_bootanim.sh");
-set_perm(0, 0, 0777, "/tmp/enable_bootanim.sh");
-run_program("/tmp/enable_bootanim.sh");
 endif;
+package_extract_file("buildproptweaks.sh", "/tmp/buildproptweaks.sh");
+set_perm(0, 0, 0777, "/tmp/buildproptweaks.sh");
+run_program("/tmp/buildproptweaks.sh");
+

@@ -60,6 +60,7 @@ viewbox(
   "icons/info"
 );
 exec("/sbin/busybox","mount","/system");
+exec("/sbin/busybox","mount","/data");
 textbox(
     "Changelog",
     "Plain-Changelog",
@@ -82,15 +83,35 @@ checkbox(
 			"Slim File Manager",     "",0 #--item.1.7
 );
 selectbox(
-	"Boot Animations Selection",
-		"Bootanimation mods",
+	"Plain-Tweak Build.prop Mods",
+		"Build.prop customization",
 		"@personalize",
-		"bootanim.prop",
+		"buildpropmods.prop",
 
-  	"Enable bootanimation?","",	2,	#-- Group 1
-		"Yes","",		1,	#-- selected.0 = 1
-		"No","",		0	#-- selected.0 = 2
+  	"LCD Density","",				2,	
+		"Stock","",				1,
+		"180","xhdpi/hdpi/tvdpi",		0,
+		"200","xhdpi/hdpi/tvdpi",		0,
+		"220","xhdpi/hdpi/tvdpi",		0,
+		"240","xhdpi/hdpi/tvdpi",		0,
+		"260","xhdpi/hdpi/tvdpi",		0,
+		"280","xxhdpi/xhdpi/hdpi/tvdpi",	0,
+		"300","xxhdpi/xhdpi/hdpi/tvdpi",	0,
+		"320","xxhdpi/xhdpi/hdpi/tvdpi",	0,
+		"340","xxhdpi/xhdpi/hdpi/tvdpi",	0,
+		"360","xxhdpi/xhdpi/hdpi/tvdpi",	0,
+		"380","xxhdpi/xhdpi/hdpi",		0,
+		"400","xxhdpi/xhdpi/hdpi",		0,
+		"420","xxhdpi/xhdpi/hdpi",		0,
+		"440","xxhdpi/xhdpi",			0,
+		"460","xxhdpi/xhdpi",			0,
+		"480","xxhdpi/xhdpi",			0,
+
+  	"Enable bootanimation?","",			2,
+		"Yes","",				1,
+		"No","",				0
 );
+
 viewbox(
   "Ready To Install",
   "All information has been collected for installation.\n\n"+
