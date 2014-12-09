@@ -50,14 +50,14 @@ else
 ui_print("@	Installing Slim File Manager");
 endif;
 if
-file_getprop("/tmp/aroma/bootanim.prop","selected.1") != "1"
+file_getprop("/tmp/aroma/buildpropmods.prop","selected.1") != "1"
 then
-ui_print("@...Injecting custom LCD density...");
+ui_print("@...Injecting Custom LCD density...");
 else
-ui_print("@...Using stock LCD density...");
+ui_print("@...Using Current LCD density...");
 endif;
 if
-file_getprop("/tmp/aroma/bootanim.prop","selected.2") != "1"
+file_getprop("/tmp/aroma/buildpropmods.prop","selected.2") != "1"
 then
 ui_print("@...Disabling Boot animations...");
 else

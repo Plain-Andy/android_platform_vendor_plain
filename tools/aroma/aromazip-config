@@ -15,10 +15,13 @@
 # limitations under the License.
 #
 
+exec("/sbin/busybox","mount","/system");
+exec("/sbin/busybox","mount","/data");
+zipexec("META-INF/com/google/android/aroma/buildprop.sh");
 ini_set("rom_name",             "Plain-Tweak Installer");
-ini_set("rom_version",          "@DATE@ Add-On");
+ini_set("rom_version",          " "+prop("/system/build.prop", "rom.buildtype")+" "+prop("build.prop", "ro.plain.version")+" Add-On");
 ini_set("rom_author",           "Snuzzo");
-ini_set("rom_device",           "@AROMA_DEVICE@");
+ini_set("rom_device",           " "+prop("build.prop", "ro.product.brand")+" "+prop("build.prop", "ro.product.model")+" ");
 
 ini_set("customkeycode_down",   "114");
 ini_set("customkeycode_select", "116");
@@ -48,28 +51,32 @@ fontresload( "1", "ttf/Roboto-Regular.ttf;ttf/DroidSansFallback.ttf;", "14" ); #
 
 viewbox(
   "Welcome",
-    "\n\n\n\n\n"+
-    "You're about to flash : <#33b5e5>\n\n"+
+    "\n\n\n\n"+
+    "You're about to flash : <#33b5e5>\n\n\t"+
     ini_get("rom_name") + "</#>\n\n"+
-    "by : <#33b5e5>\n\n"+ 
-    ini_get("rom_author") + "</#>\n\n\n"+ 
-    "  VERSION : <#33b5e5>" + ini_get("rom_version") + "</#>\n\n"+
-    "  DEVICE : <#33b5e5>" + ini_get("rom_device") + "</#>\n\n"+
-    "  UPDATED : <#33b5e5>@DATE@</#>\n\n\n"+
-    "Press Next to continue the installation...",
+    "by : <#33b5e5>\n\n\t"+ 
+    ini_get("rom_author") + "</#>\n\n\n\n\n"+ 
+    "VERSION :\n\t<#33b5e5>" + ini_get("rom_version") + "</#>\n\n"+
+    "DEVICE :\n\t<#33b5e5>" + ini_get("rom_device") + "</#>\n\n"+
+    "ROM BUILD DATE :\n\t<#33b5e5>"+prop("build.prop", "ro.build.date")+"</#>\n\n\n\n\n\n"+
+    "\tPress Next to continue the installation...",
   "icons/info"
 );
-exec("/sbin/busybox","mount","/system");
-exec("/sbin/busybox","mount","/data");
 #@AROMA_DEVICE_CONFIG@
+alert(
+    "Current values:",
+	"LCD Density: "+prop("build.prop", "ro.sf.lcd_density")+"\n"+
+	"Stock Density: "+prop("build.prop", "stockdensity")
+);
+writetmpfile("currentdensity.prop", "stockdensity="+prop("build.prop", "ro.sf.lcd_density"));
 selectbox(
 	"Plain-Tweak Build.prop Mods",
-		"Build.prop customization",
+		"<@center><b>Build.prop customization</@></b>",
 		"@personalize",
 		"buildpropmods.prop",
 
-  	"LCD Density","",				2,	
-		"Stock","",				1,
+  	"<b>LCD Density","Applicable DPI per Device</b>",	2,	
+		"Use Current","",				1,
 		"180","xhdpi/hdpi/tvdpi",		0,
 		"200","xhdpi/hdpi/tvdpi",		0,
 		"220","xhdpi/hdpi/tvdpi",		0,
@@ -87,7 +94,7 @@ selectbox(
 		"460","xxhdpi/xhdpi",			0,
 		"480","xxhdpi/xhdpi",			0,
 
-  	"Enable bootanimation?","",			2,
+  	"<b>Enable bootanimation?</b>","",			2,
 		"Yes","",				1,
 		"No","",				0
 );

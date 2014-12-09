@@ -1,18 +1,10 @@
 #!/system/bin/sh
-stockdensity=$(getprop ro.sf.lcd_density);
+mount -o remount,rw /system
 if [ -e /sdcard/customdensity ]
 then
 cp /sdcard/customdensity /data/local/tmp/customdensity
-else
-cp /data/local/tmp/stockdensity /data/local/tmp/customdensity
-fi
-if [ -e /data/local/tmp/customdensity ]
-then
-chmod 0775 /data/local/tmp/stockdensity
-. /data/local/tmp/stockdensity
-chmod 0775 /data/local/tmp/customdensity
 . /data/local/tmp/customdensity
-setprop stockdensity $stockdensity
+. /system/densitybackup.prop
 if [ ! -z $customdensity ]
 then
 setprop customdensity $customdensity
@@ -37,17 +29,28 @@ then
 echo "Aborting; Density comparison is more than 180"
 exit
 fi
-currentdensity=$(getprop ro.sf.lcd_density);
-if [ $(getprop customdensity) != "$currentdensity" ];
+if [ $(getprop customdensity) != $(getprop ro.sf.lcd_density) ];
 	then
 		setprop ro.sf.lcd_density $customdensity
-		mount -o remount,rw /system
+		sed -i '/customdensity=/d' /system/build.prop;
 		sed -i '/ro.sf.lcd_density=/d' /system/build.prop;
+		echo 'customdensity='$(getprop customdensity) >> /system/build.prop;
 		echo 'ro.sf.lcd_density='$(getprop customdensity) >> /system/build.prop;
-		mount -o remount,ro /system
+		
 fi
 else
-echo 'customdensity='$(getprop customdensity) > /sdcard/customdensity
-echo 'stockdensity='$stockdensity > /data/local/tmp/stockdensity
-setprop stockdensity $stockdensity
+if [ -z $(getprop stockdensity) ];
+then
+if [ ! -e /system/densitybackup.prop ]
+then
+echo 'stockdensity='$(getprop ro.sf.lcd_density) > /system/densitybackup.prop;
 fi
+. /system/densitybackup.prop
+echo 'stockdensity='$(getprop ro.sf.lcd_density) >> /system/build.prop;
+echo 'customdensity='$(getprop ro.sf.lcd_density) >> /system/build.prop;
+fi
+. /system/densitybackup.prop
+sed -i '/ro.sf.lcd_density=/d' /system/build.prop
+echo 'ro.sf.lcd_density='$stockdensity >> /system/build.prop
+fi
+mount -o remount,ro /system
