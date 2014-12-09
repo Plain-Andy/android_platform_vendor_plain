@@ -18,7 +18,7 @@ exec("/sbin/busybox","mount","/system");
 exec("/sbin/busybox","mount","/data");
 ziptotmp("system/build.prop", "build.prop");
 ini_set("rom_name",             "Plain-Andy");
-ini_set("rom_version",          +prop("build.prop", "rom.buildtype")+" "+prop("build.prop", "ro.plain.version"));
+ini_set("rom_version",          " "+prop("build.prop", "ro.modversion")+prop("build.prop", "rom.buildtype")+" "+prop("build.prop", "ro.plain.version"));
 ini_set("rom_author",           "Snuzzo");
 ini_set("rom_device",           " "+prop("build.prop", "ro.product.brand")+" "+prop("build.prop", "ro.product.model")+" ");
 
