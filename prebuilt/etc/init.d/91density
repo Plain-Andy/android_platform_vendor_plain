@@ -1,16 +1,19 @@
 #!/system/bin/sh
 mount -o remount,rw /system
+if [ ! -e /system/densitybackup.prop ]
+then
+echo 'stockdensity='$(getprop ro.sf.lcd_density) > /system/densitybackup.prop;
+echo 'stockdensity='$(getprop ro.sf.lcd_density) >> /system/build.prop
+chmod 0777 /system/densitybackup.prop
+exit
+fi
+stockdensity=$(grep "stockdensity" /system/densitybackup.prop  | sed 's/stockdensity*.//')
+setprop stockdensity $stockdensity
 if [ -e /sdcard/customdensity ]
 then
 cp /sdcard/customdensity /data/local/tmp/customdensity
-. /data/local/tmp/customdensity
-. /system/densitybackup.prop
-if [ ! -z $customdensity ]
-then
+customdensity=$(grep "customdensity" /data/local/tmp/customdensity  | sed 's/customdensity*.//')
 setprop customdensity $customdensity
-else
-setprop customdensity $stockdensity
-fi
 if [ $(getprop customdensity) -gt $(getprop stockdensity) ]
 then
 compare=$(expr $(getprop customdensity) - $(getprop stockdensity))
@@ -39,18 +42,12 @@ if [ $(getprop customdensity) != $(getprop ro.sf.lcd_density) ];
 		
 fi
 else
-if [ -z $(getprop stockdensity) ];
+if [ "$stockdensity" != $(getprop ro.sf.lcd_density) ];
 then
-if [ ! -e /system/densitybackup.prop ]
-then
-echo 'stockdensity='$(getprop ro.sf.lcd_density) > /system/densitybackup.prop;
+sed -i '/stockdensity=/d' /system/build.prop;
+echo 'stockdensity='$stockdensity >> /system/build.prop;
+sed -i '/ro.sf.lcd_density=/d' /system/build.prop;
+echo 'ro.sf.lcd_density='$stockdensity >> /system/build.prop;
 fi
-. /system/densitybackup.prop
-echo 'stockdensity='$(getprop ro.sf.lcd_density) >> /system/build.prop;
-echo 'customdensity='$(getprop ro.sf.lcd_density) >> /system/build.prop;
-fi
-. /system/densitybackup.prop
-sed -i '/ro.sf.lcd_density=/d' /system/build.prop
-echo 'ro.sf.lcd_density='$stockdensity >> /system/build.prop
 fi
 mount -o remount,ro /system
