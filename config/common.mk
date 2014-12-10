@@ -51,6 +51,11 @@ PRODUCT_COPY_FILES += \
     vendor/plain/prebuilt/etc/init.d/91density:/system/etc/init.d/91density \
     vendor/plain/prebuilt/etc/init.d/92plainwatcher:/system/etc/init.d/92plainwatcher
 
+#Add System rewriteable/read only scripts
+PRODUCT_COPY_FILES += \
+    vendor/plain/prebuilt/bin/sysrw:system/bin/sysrw  \
+    vendor/plain/prebuilt/bin/sysrw:system/bin/sysro
+
 # Enable SIP and VoIP on all targets
 PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml
