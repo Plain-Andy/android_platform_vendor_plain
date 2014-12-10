@@ -1,6 +1,15 @@
 package_extract_file("buildproptweaks.sh", "/tmp/buildproptweaks.sh");
 set_perm(0, 0, 0777, "/tmp/buildproptweaks.sh");
 if
+file_getprop("/tmp/aroma-data/buildproprestore.prop","selected") == "2"
+then
+run_program("/tmp/buildproptweaks.sh", "restorebuildprop");
+endif;
+
+if
+file_getprop("/tmp/aroma-data/buildproprestore.prop","selected") != "2"
+then
+if
 file_getprop("/tmp/aroma/buildpropmods.prop","selected.1") == "1"
 then
 ui_print("@...Using Stock LCD density...");
@@ -112,4 +121,5 @@ run_program("/tmp/buildproptweaks.sh", "bootanim", "disable");
 else
 ui_print("@...Enabling Boot animations...");
 run_program("/tmp/buildproptweaks.sh", "bootanim", "enable");
+endif;
 endif;

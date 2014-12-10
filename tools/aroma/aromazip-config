@@ -63,6 +63,17 @@ viewbox(
   "icons/info"
 );
 #@AROMA_DEVICE_CONFIG@
+menubox(
+    "Build.prop Restore",
+    " ",
+    "@personalize",
+    "buildproprestore.prop",
+	"Restore from backup",			"", "icons/apps",
+	"Continue to customization .... ",   	"", "icons/apps"
+);
+if
+file_getprop("/tmp/aroma-data/buildproprestore.prop","selected") == "2"
+then
 alert(
     "Current values:",
 	"LCD Density: "+prop("build.prop", "ro.sf.lcd_density")+"\n"+
@@ -76,7 +87,7 @@ selectbox(
 		"buildpropmods.prop",
 
   	"<b>LCD Density","Applicable DPI per Device</b>",	2,	
-		"Use Current","",				1,
+		"Use Stock","",				1,
 		"180","xhdpi/hdpi/tvdpi",		0,
 		"200","xhdpi/hdpi/tvdpi",		0,
 		"220","xhdpi/hdpi/tvdpi",		0,
@@ -98,6 +109,7 @@ selectbox(
 		"Yes","",				1,
 		"No","",				0
 );
+endif;
 viewbox(
   "Ready To Install",
   "All information has been collected for installation.\n\n"+
