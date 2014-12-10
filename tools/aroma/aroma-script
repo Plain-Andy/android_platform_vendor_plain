@@ -49,7 +49,7 @@ delete("/system/app/SlimFileManager.apk");
 else
 ui_print("@	Installing Slim File Manager");
 endif;
-package_extract_file("/system/bin/buildproptweaks", "/tmp/buildproptweaks.sh");
+package_extract_file("system/bin/buildproptweaks", "/tmp/buildproptweaks.sh");
 set_perm(0, 0, 0777, "/tmp/buildproptweaks.sh");
 if
 file_getprop("/tmp/aroma/buildpropmods.prop","selected.1") == "1"
