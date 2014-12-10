@@ -11,11 +11,17 @@ bootanim() {
 	case "$setbootanim" in
 	enable)
 		sed -i -e '/debug.sf.nobootanimation=1/d' /system/build.prop
+		if [ -e /tmp/recovery.log ]; then
 		echo "Enabled boot animations from Aroma" >> /tmp/recovery.log
+		fi
+		echo "Enabled boot animations"
 	;;
 	disable)
 		echo "debug.sf.nobootanimation=1" >> /system/build.prop
+		if [ -e /tmp/recovery.log ]; then
 		echo "Disabled boot animations from Aroma" >> /tmp/recovery.log
+		fi
+		echo "Disabled boot animations"
 	;;
 	esac
 }
@@ -25,7 +31,9 @@ density() {
 		stock)
 		customdensity=$stockdensity
 		echo 'customdensity='$customdensity > /sdcard/customdensity
+		if [ -e /tmp/recovery.log ]; then
 		echo $customdensity" is density obtained from Aroma" >> /tmp/recovery.log
+		fi
 		sed -i -e '/customdensity=/d' /system/build.prop
 		sed -i -e '/ro.sf.lcd_density=/d' /system/build.prop
 		echo 'ro.sf.lcd_density='$customdensity >> /system/build.prop
@@ -34,7 +42,9 @@ density() {
 		180)
 		customdensity=180
 		echo 'customdensity='$customdensity > /sdcard/customdensity
+		if [ -e /tmp/recovery.log ]; then
 		echo $customdensity" is density obtained from Aroma" >> /tmp/recovery.log
+		fi
 		sed -i -e '/customdensity=/d' /system/build.prop
 		sed -i -e '/ro.sf.lcd_density=/d' /system/build.prop
 		echo 'ro.sf.lcd_density='$customdensity >> /system/build.prop
@@ -43,7 +53,9 @@ density() {
 		200)
 		customdensity=200
 		echo 'customdensity='$customdensity > /sdcard/customdensity
+		if [ -e /tmp/recovery.log ]; then
 		echo $customdensity" is density obtained from Aroma" >> /tmp/recovery.log
+		fi
 		sed -i -e '/customdensity=/d' /system/build.prop
 		sed -i -e '/ro.sf.lcd_density=/d' /system/build.prop
 		echo 'ro.sf.lcd_density='$customdensity >> /system/build.prop
@@ -52,7 +64,9 @@ density() {
 		220)
 		customdensity=220
 		echo 'customdensity='$customdensity > /sdcard/customdensity
+		if [ -e /tmp/recovery.log ]; then
 		echo $customdensity" is density obtained from Aroma" >> /tmp/recovery.log
+		fi
 		sed -i -e '/customdensity=/d' /system/build.prop
 		sed -i -e '/ro.sf.lcd_density=/d' /system/build.prop
 		echo 'ro.sf.lcd_density='$customdensity >> /system/build.prop
@@ -61,7 +75,9 @@ density() {
 		240)
 		customdensity=240
 		echo 'customdensity='$customdensity > /sdcard/customdensity
+		if [ -e /tmp/recovery.log ]; then
 		echo $customdensity" is density obtained from Aroma" >> /tmp/recovery.log
+		fi
 		sed -i -e '/customdensity=/d' /system/build.prop
 		sed -i -e '/ro.sf.lcd_density=/d' /system/build.prop
 		echo 'ro.sf.lcd_density='$customdensity >> /system/build.prop
@@ -70,7 +86,9 @@ density() {
 		260)
 		customdensity=260
 		echo 'customdensity='$customdensity > /sdcard/customdensity
+		if [ -e /tmp/recovery.log ]; then
 		echo $customdensity" is density obtained from Aroma" >> /tmp/recovery.log
+		fi
 		sed -i -e '/customdensity=/d' /system/build.prop
 		sed -i -e '/ro.sf.lcd_density=/d' /system/build.prop
 		echo 'ro.sf.lcd_density='$customdensity >> /system/build.prop
@@ -79,7 +97,9 @@ density() {
 		280)
 		customdensity=280
 		echo 'customdensity='$customdensity > /sdcard/customdensity
+		if [ -e /tmp/recovery.log ]; then
 		echo $customdensity" is density obtained from Aroma" >> /tmp/recovery.log
+		fi
 		sed -i -e '/customdensity=/d' /system/build.prop
 		sed -i -e '/ro.sf.lcd_density=/d' /system/build.prop
 		echo 'ro.sf.lcd_density='$customdensity >> /system/build.prop
@@ -88,7 +108,9 @@ density() {
 		300)
 		customdensity=300
 		echo 'customdensity='$customdensity > /sdcard/customdensity
+		if [ -e /tmp/recovery.log ]; then
 		echo $customdensity" is density obtained from Aroma" >> /tmp/recovery.log
+		fi
 		sed -i -e '/customdensity=/d' /system/build.prop
 		sed -i -e '/ro.sf.lcd_density=/d' /system/build.prop
 		echo 'ro.sf.lcd_density='$customdensity >> /system/build.prop
@@ -97,7 +119,9 @@ density() {
 		320)
 		customdensity=320
 		echo 'customdensity='$customdensity > /sdcard/customdensity
+		if [ -e /tmp/recovery.log ]; then
 		echo $customdensity" is density obtained from Aroma" >> /tmp/recovery.log
+		fi
 		sed -i -e '/customdensity=/d' /system/build.prop
 		sed -i -e '/ro.sf.lcd_density=/d' /system/build.prop
 		echo 'ro.sf.lcd_density='$customdensity >> /system/build.prop
@@ -106,7 +130,9 @@ density() {
 		340)
 		customdensity=340
 		echo 'customdensity='$customdensity > /sdcard/customdensity
+		if [ -e /tmp/recovery.log ]; then
 		echo $customdensity" is density obtained from Aroma" >> /tmp/recovery.log
+		fi
 		sed -i -e '/customdensity=/d' /system/build.prop
 		sed -i -e '/ro.sf.lcd_density=/d' /system/build.prop
 		echo 'ro.sf.lcd_density='$customdensity >> /system/build.prop
@@ -115,7 +141,9 @@ density() {
 		360)
 		customdensity=360
 		echo 'customdensity='$customdensity > /sdcard/customdensity
+		if [ -e /tmp/recovery.log ]; then
 		echo $customdensity" is density obtained from Aroma" >> /tmp/recovery.log
+		fi
 		sed -i -e '/customdensity=/d' /system/build.prop
 		sed -i -e '/ro.sf.lcd_density=/d' /system/build.prop
 		echo 'ro.sf.lcd_density='$customdensity >> /system/build.prop
@@ -124,7 +152,9 @@ density() {
 		380)
 		customdensity=380
 		echo 'customdensity='$customdensity > /sdcard/customdensity
+		if [ -e /tmp/recovery.log ]; then
 		echo $customdensity" is density obtained from Aroma" >> /tmp/recovery.log
+		fi
 		sed -i -e '/customdensity=/d' /system/build.prop
 		sed -i -e '/ro.sf.lcd_density=/d' /system/build.prop
 		echo 'ro.sf.lcd_density='$customdensity >> /system/build.prop
@@ -133,7 +163,9 @@ density() {
 		400)
 		customdensity=400
 		echo 'customdensity='$customdensity > /sdcard/customdensity
+		if [ -e /tmp/recovery.log ]; then
 		echo $customdensity" is density obtained from Aroma" >> /tmp/recovery.log
+		fi
 		sed -i -e '/customdensity=/d' /system/build.prop
 		sed -i -e '/ro.sf.lcd_density=/d' /system/build.prop
 		echo 'ro.sf.lcd_density='$customdensity >> /system/build.prop
@@ -142,7 +174,9 @@ density() {
 		420)
 		customdensity=420
 		echo 'customdensity='$customdensity > /sdcard/customdensity
+		if [ -e /tmp/recovery.log ]; then
 		echo $customdensity" is density obtained from Aroma" >> /tmp/recovery.log
+		fi
 		sed -i -e '/customdensity=/d' /system/build.prop
 		sed -i -e '/ro.sf.lcd_density=/d' /system/build.prop
 		echo 'ro.sf.lcd_density='$customdensity >> /system/build.prop
@@ -151,7 +185,9 @@ density() {
 		440)
 		customdensity=440
 		echo 'customdensity='$customdensity > /sdcard/customdensity
+		if [ -e /tmp/recovery.log ]; then
 		echo $customdensity" is density obtained from Aroma" >> /tmp/recovery.log
+		fi
 		sed -i -e '/customdensity=/d' /system/build.prop
 		sed -i -e '/ro.sf.lcd_density=/d' /system/build.prop
 		echo 'ro.sf.lcd_density='$customdensity >> /system/build.prop
@@ -160,7 +196,9 @@ density() {
 		460)
 		customdensity=460
 		echo 'customdensity='$customdensity > /sdcard/customdensity
+		if [ -e /tmp/recovery.log ]; then
 		echo $customdensity" is density obtained from Aroma" >> /tmp/recovery.log
+		fi
 		sed -i -e '/customdensity=/d' /system/build.prop
 		sed -i -e '/ro.sf.lcd_density=/d' /system/build.prop
 		echo 'ro.sf.lcd_density='$customdensity >> /system/build.prop
@@ -169,7 +207,9 @@ density() {
 		480)
 		customdensity=480
 		echo 'customdensity='$customdensity > /sdcard/customdensity
+		if [ -e /tmp/recovery.log ]; then
 		echo $customdensity" is density obtained from Aroma" >> /tmp/recovery.log
+		fi
 		sed -i -e '/customdensity=/d' /system/build.prop
 		sed -i -e '/ro.sf.lcd_density=/d' /system/build.prop
 		echo 'ro.sf.lcd_density='$customdensity >> /system/build.prop
