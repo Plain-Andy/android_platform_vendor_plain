@@ -49,8 +49,6 @@ delete_recursive("/system/app/SlimFileManager");
 else
 ui_print("@	Installing Slim File Manager");
 endif;
-package_extract_file("system/bin/buildproptweaks", "/tmp/buildproptweaks.sh");
-set_perm(0, 0, 0777, "/tmp/buildproptweaks.sh");
 if
 file_getprop("/tmp/aroma/bootanim.prop","selected.1") != "1"
 then
