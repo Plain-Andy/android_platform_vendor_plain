@@ -1,5 +1,27 @@
 #!/system/bin/sh
 mount -o rw,remount /system
+if [ -e /sdcard/bootani/nosound ]; then
+if [ ! -e /system/media/nsound-boot.wav ]; then
+cp /system/media/boot.wav /system/media/nosound-boot-original
+fi
+else
+
+if [ -e /sdcard/bootani/boot.wav ]; then
+if [ ! -e /system/media/boot.wav-original ]; then
+cp /system/media/boot.wav /system/media/boot.wav-original
+fi
+cp /sdcard/bootani/boot.wav /system/media/boot.wav
+fi
+
+if [ ! -e /sdcard/bootani/boot.wav ]; then
+if [ -e /system/media/boot.wav-original ]; then
+rm  /system/media/boot.wav
+cp  /system/media/boot.wav-original /system/media/boot.wav-original
+fi
+fi
+
+fi
+
 if [ -e /sdcard/bootani/bootanimation.zip ]; then
 if [ ! -e /system/media/bootanimation-original ]; then
 cp /system/media/bootanimation.zip /system/media/bootanimation-original

@@ -62,20 +62,5 @@ PRODUCT_COPY_FILES += \
 
 -include vendor/plain/sepolicy/sepolicy.mk
 
--include vendor/plain/config/nfc_enhanced.mk
-
-# CM Hardware Abstraction Framework
-PRODUCT_PACKAGES += \
-    org.cyanogenmod.hardware \
-    org.cyanogenmod.hardware.xml
-
 # Add our overlays
 PRODUCT_PACKAGE_OVERLAYS += vendor/plain/overlay/common
-
-# Extra recovery tools for CWM 
-PRODUCT_PACKAGES += \
-    recovery_e2fsck \
-    recovery_mke2fs \
-    recovery_tune2fs \
-    mount.exfat_static \
-    minivold

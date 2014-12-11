@@ -120,9 +120,9 @@ if
       "Reboot",
       "Reboot Now",
       "icons/info",
-      "Reboot",
+      "Wipe Dalvik/Cache",
       "No"
   )=="yes"
 then
-  reboot("onfinish");
+writetmpfile("wipecaches.prop",	"wipecaches=true");
 endif;

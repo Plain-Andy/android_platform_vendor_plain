@@ -1,1 +1,3 @@
 add_lunch_combo plain_grouper-user
+add_lunch_combo plain_mondrianwifi-user
+

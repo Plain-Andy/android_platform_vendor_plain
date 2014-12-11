@@ -20,7 +20,11 @@ ifndef ROM_BUILDTYPE
 	ROM_BUILDTYPE := Unofficial
 endif
 
+ifeq ($(ROM_BUILDTYPE),Unofficial)
 ROM_VERSION := $(shell date -u +%Y%m%d)-$(TARGET_PRODUCT_SHORT)
+else
+ROM_VERSION := $(PLATFORM_VERSION)-$(TARGET_PRODUCT_SHORT)
+endif
 
 ifdef AROMA_BUILD
 	ROM_BUILDTYPE := $(ROM_BUILDTYPE)-Aroma
@@ -30,6 +34,12 @@ ifdef BUILDTYPE_RELEASE
 	ROM_BUILDTYPE := Release 
 	ROM_VERSION := v$(ROM_VERSION_MAJOR).$(ROM_VERSION_MINOR)-$(TARGET_PRODUCT_SHORT)
 	AROMA_BUILD := true
+endif
+
+ifneq ($(ROM_BUILDTYPE),Release)
+changelog: ./vendor/plain/utils/changelog_gen.sh $(date -d "1 month ago" '+%m-%d-%Y')
+else
+changelog: ./vendor/plain/utils/changelog_gen.sh $(date -d "1 week ago" '+%m-%d-%Y')
 endif
 
 # Apply it to build.prop

@@ -54,9 +54,8 @@ file_getprop("/tmp/aroma/bootanim.prop","selected.1") != "1"
 then
 ui_print("@...Disabling Boot animations...");
 package_extract_file("disable_bootanim.sh", "/tmp/disable_bootanim.sh");
-set_perm(0, 0, 0777, "/tmp/disable_bootanim.sh");
+set_metadata("/tmp/disable_bootanim.sh", "uid", 0, "gid", 0, "mode", 0777);
 run_program("/tmp/disable_bootanim.sh");
 else
 ui_print("@...Enabling Boot animations...");
 endif;
-

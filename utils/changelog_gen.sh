@@ -1,6 +1,8 @@
 #!/bin/sh
-
-sdate=$(date -d "1 month ago" '+%m-%d-%Y')
+mkdir -p $OUT/system/etc
+if [ -z "$sdate" ]; then
+sdate=$1
+fi
 cdate=`date +"%m_%d_%Y"`
 #rdir=`pwd`
 
@@ -22,14 +24,16 @@ do
     else
         # Prepend group project ownership to each project.
         origin=`grep "$project" $ANDROID_BUILD_TOP/.repo/manifest.xml | awk {'print $4'} | cut -f2 -d '"'`
-        if [ "$origin" = "plain" ] || [ "$origin" = "github" ]; then
-            proj_credit=Plain-Andy
+        if [ "$origin" = "aosp" ] || [ "$origin" = "github" ]; then
+            proj_credit=AOSP
         elif [ "$origin" = "aokp" ]; then
             proj_credit=AOKP
         elif [ "$origin" = "cm" ]; then
             proj_credit=CyanogenMod
-        else
-            proj_credit="$origin"
+        elif [ "$origin" = "cm" ]; then
+            proj_credit=Plain-Andy
+        #else
+        #    proj_credit="$origin"
         fi
         # Write the changelog
         echo "<b><p>*--- ROM Source: $proj_credit ---*</p></b>" >> $ANDROID_BUILD_TOP/Changelog_$cdate.htm
