@@ -12,6 +12,10 @@ if [ -z "$sdate" ]; then
     echo "Please define a start date in mm/dd/yyyy format."
     read sdate
 fi
+echo "" > $ANDROID_BUILD_TOP/Changelog_$cdate.htm
+if [ -d $OUT ]; then
+echo "" > $OUT/system/etc/CHANGELOG.txt
+fi
 # Find the directories to log
 find $ANDROID_BUILD_TOP -name .git | sed 's/\/.git//g' | sed 'N;$!P;$!D;$d' | while read line
 do

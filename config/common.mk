@@ -41,15 +41,18 @@ PRODUCT_COPY_FILES += \
 
 # Init script file with plain extras
 PRODUCT_COPY_FILES += \
-    vendor/plain/prebuilt/etc/init.local.rc:root/init.slim.rc \
+    vendor/plain/prebuilt/etc/init.local.rc:root/init.plain.rc \
     vendor/plain/prebuilt/etc/init.plain.kerneltweak.sh:/system/etc/init.plain.kerneltweak.sh \
     vendor/plain/prebuilt/bin/plaintweak:system/bin/plaintweak \
-    vendor/plain/prebuilt/etc/init.d/99customanimation:/system/etc/init.d/99customanimation \
-    external/koush/Superuser/init.superuser.rc:root/init.superuser.rc
+    vendor/plain/prebuilt/etc/init.d/99customanimation:/system/etc/init.d/99customanimation
 
 # Enable SIP and VoIP on all targets
 PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml
+
+# Signature compatibility validation from CM
+PRODUCT_COPY_FILES += \
+    vendor/plain/prebuilt/bin/otasigcheck.sh:system/bin/otasigcheck.sh
 
 # Additional packages
 -include vendor/plain/config/packages.mk
