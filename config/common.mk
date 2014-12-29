@@ -67,3 +67,10 @@ PRODUCT_COPY_FILES += \
 
 # Add our overlays
 PRODUCT_PACKAGE_OVERLAYS += vendor/plain/overlay/common
+
+# Stagefright FFMPEG plugin
+PRODUCT_PACKAGES += \
+    libstagefright_soft_ffmpegadec \
+    libstagefright_soft_ffmpegvdec \
+    libFFmpegExtractor \
+    libnamparser
