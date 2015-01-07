@@ -42,9 +42,10 @@ PRODUCT_COPY_FILES += \
 # Init script file with plain extras
 PRODUCT_COPY_FILES += \
     vendor/plain/prebuilt/etc/init.local.rc:root/init.aicp.rc \
-    vendor/plain/prebuilt/etc/init.plain.kerneltweak.sh:/system/etc/init.plain.kerneltweak.sh \
+    vendor/plain/prebuilt/etc/init.plain.kerneltweak.sh:system/etc/init.plain.kerneltweak.sh \
     vendor/plain/prebuilt/bin/plaintweak:system/bin/plaintweak \
-    vendor/plain/prebuilt/etc/init.d/99customanimation:/system/etc/init.d/99customanimation
+    vendor/plain/prebuilt/etc/init.d/91customdensity:system/etc/init.d/91customdensity \
+    vendor/plain/prebuilt/etc/init.d/99customanimation:system/etc/init.d/99customanimation
 
 # Enable SIP and VoIP on all targets
 PRODUCT_COPY_FILES += \
