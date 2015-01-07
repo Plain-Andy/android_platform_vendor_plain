@@ -1,7 +1,7 @@
-#!/bin/sh
 mkdir -p $OUT/system/etc
-if [ -z "$sdate" ]; then
 sdate=$1
+if [ -n "$changelog_date" ]; then
+sdate=$changelog_date
 fi
 cdate=`date +"%m_%d_%Y"`
 #rdir=`pwd`
@@ -34,10 +34,10 @@ do
             proj_credit=AOKP
         elif [ "$origin" = "cm" ]; then
             proj_credit=CyanogenMod
-        elif [ "$origin" = "cm" ]; then
+        elif [ "$origin" = "pa-legacy" ]; then
             proj_credit=Plain-Andy
-        #else
-        #    proj_credit="$origin"
+        else
+            proj_credit="$origin"
         fi
         # Write the changelog
         echo "<b><p>*--- ROM Source: $proj_credit ---*</p></b>" >> $ANDROID_BUILD_TOP/Changelog_$cdate.htm
@@ -53,5 +53,3 @@ do
         echo "" >> $OUT/system/etc/CHANGELOG.txt
     fi
 done
-
-return 0
