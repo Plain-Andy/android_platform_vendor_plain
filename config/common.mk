@@ -19,7 +19,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
         ro.min.fling_velocity=9000 \
         persist.sys.scrollingcache=3
 
-ADDITIONAL_DEFAULT_PROPERTIES += ro.adb.secure=0
+ADDITIONAL_DEFAULT_PROPERTIES += \
+	ro.adb.secure=0 \
+	enable_plaintweak=true
 
 # Embed SuperUser
 SUPERUSER_EMBEDDED := true

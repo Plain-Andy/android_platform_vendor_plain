@@ -1,4 +1,5 @@
 #!/system/bin/sh
+if [ $(getprop enable_plaintweak) == "true" ]; then
 if [ -e /sdcard/plaintweak ]
 then
 cp /sdcard/plaintweak /data/local/tmp/plaintweak
@@ -119,4 +120,13 @@ fi
 if [ ! -z $(getprop gov2) ]
 then
 echo -n '\03 Plain-Tweak\0 Governor2 for cores 3/4 is '$(getprop gov2)'\0' > /dev/log/main
+fi
+fi
+if [ $(getprop enable_plaintweak) == "false" ]; then
+setprop tcpcong "Plain-Tweak disabled"
+setprop scheduler "Plain-Tweak disabled"
+setprop gov "Plain-Tweak disabled"
+setprop minkhz "Plain-Tweak disabled"
+setprop maxkhz "Plain-Tweak disabled"
+echo -n '\03 Plain-Tweak\0 Plain-Tweak disabled\0' > /dev/log/main
 fi

@@ -4,6 +4,10 @@ setprop stockscheduler $(cat /sys/block/mmcblk0/queue/scheduler | sed 's/.*[[]//
 setprop stockgov $(ls /sys/devices/system/cpu/cpufreq)
 setprop stockminkhz $(cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq)
 setprop stockmaxkhz $(cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq)
+if [ $(getprop enable_plaintweak) == "false" ]; then
+echo "Disabling Plain-Tweak"
+fi
+if [ $(getprop enable_plaintweak) == "true" ]; then
 cmd='sh /system/etc/init.plain.kerneltweak.sh'
 sha=0
 if [ -z $(getprop updateinterval) ]
@@ -79,3 +83,4 @@ while true; do
   compare
   sleep $(getprop updateinterval)
 done
+fi
