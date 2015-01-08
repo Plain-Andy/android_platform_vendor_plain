@@ -33,10 +33,14 @@ compare() {
     build
     previous_sha=$sha
   fi
-( echo $(getprop maxkhz) > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq
+( if [ -d /sys/devices/system/cpu/cpu1/cpufreq ]
+then
+echo $(getprop maxkhz) > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq
 echo $(getprop minkhz) > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq
 echo $(getprop gov) > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
-
+fi
+if [ -d /sys/devices/system/cpu/cpu2/cpufreq ]
+then
 if [ -z $(getprop maxkhz2) ]
 then
 echo $(getprop maxkhz) > /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq
@@ -55,7 +59,10 @@ echo $(getprop gov) > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
 else
 echo $(getprop gov2) > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
 fi
+fi
 
+if [ -d /sys/devices/system/cpu/cpu3/cpufreq ]
+then
 if [ -z $(getprop maxkhz2) ]
 then
 echo $(getprop maxkhz) > /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq
@@ -74,6 +81,7 @@ then
 echo $(getprop gov) > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
 else
 echo $(getprop gov2) > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
+fi
 fi )
 
 }
