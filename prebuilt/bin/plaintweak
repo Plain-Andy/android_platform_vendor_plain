@@ -29,7 +29,7 @@ exit
 fi
 if [ "$input" != "0" ];then
 maxkhz=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies | sed 's/ /\n/g' | sed '$d' | tail -n 5 | head -n $input | tail -n 1)
-echo 'setprop maxkhz '$maxkhz > /$extsd/plaintweak
+echo 'maxkhz='$maxkhz > /$extsd/plaintweak
 fi
 clear
 echo "Min CPU Clock selection:"
@@ -55,7 +55,7 @@ exit
 fi
 if [ "$input" != "0" ];then
 minkhz=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies | sed 's/ /\n/g' | sed '$d' | head -n 4 | head -n $input | tail -n 1)
-echo 'setprop minkhz '$minkhz >> /$extsd/plaintweak
+echo 'minkhz='$minkhz >> /$extsd/plaintweak
 fi
 clear
 echo "Governor selection:"
@@ -81,7 +81,7 @@ exit
 fi
 if [ "$input" != "0" ];then
 gov=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors | sed 's/ /\n/g' | sed '$d' | head -n $input | tail -n 1)
-echo 'setprop gov '$gov >> /$extsd/plaintweak
+echo 'gov='$gov >> /$extsd/plaintweak
 fi
 clear
 echo "IO Scheduler selection:"
@@ -107,7 +107,7 @@ exit
 fi
 if [ "$input" != "0" ];then
 scheduler=$(cat /sys/block/mmcblk0/queue/scheduler | sed 's/[[]//g' | sed 's/[]]//g' | sed 's/ /\n/g' | sed '$d' | sed 's/ //g' | head -n $input | tail -n 1)
-echo 'setprop scheduler '$scheduler >> /$extsd/plaintweak
+echo 'scheduler='$scheduler >> /$extsd/plaintweak
 fi
 clear
 clear
@@ -134,6 +134,6 @@ exit
 fi
 if [ "$input" != "0" ];then
 tcpcong=$(cat /proc/sys/net/ipv4/tcp_available_congestion_control | sed 's/ /\n/g' | head -n $input | tail -n 1)
-echo 'setprop tcpcong '$tcpcong >> /$extsd/plaintweak
+echo 'tcpcong='$tcpcong >> /$extsd/plaintweak
 fi
 . /system/etc/init.plain.kerneltweak.sh
