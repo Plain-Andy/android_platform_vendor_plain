@@ -14,11 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-ini_set("rom_name",             "Plain Andy");
-ini_set("rom_version",          "@DATE@");
+exec("/sbin/busybox","mount","/system");
+exec("/sbin/busybox","mount","/data");
+ziptotmp("system/build.prop", "build.prop");
+ini_set("rom_name",             "Plain-Andy");
+ini_set("rom_version",          " "+prop("build.prop", "ro.modversion")+prop("build.prop", "rom.buildtype")+" "+prop("build.prop", "ro.plain.version"));
 ini_set("rom_author",           "Snuzzo");
-ini_set("rom_device",           "@AROMA_DEVICE@");
+ini_set("rom_device",           " "+prop("build.prop", "ro.product.brand")+" "+prop("build.prop", "ro.product.model")+" ");
 
 ini_set("customkeycode_down",   "114");
 ini_set("customkeycode_select", "116");
@@ -48,18 +50,17 @@ fontresload( "1", "ttf/Roboto-Regular.ttf;ttf/DroidSansFallback.ttf;", "14" ); #
 
 viewbox(
   "Welcome",
-    "\n\n\n\n\n"+
-    "You're about to flash : <#33b5e5>\n\n"+
+    "\n\n\n\n"+
+    "You're about to flash : <#33b5e5>\n\n\t"+
     ini_get("rom_name") + "</#>\n\n"+
-    "by : <#33b5e5>\n\n"+ 
-    ini_get("rom_author") + "</#>\n\n\n"+ 
-    "  VERSION : <#33b5e5>" + ini_get("rom_version") + "</#>\n\n"+
-    "  DEVICE : <#33b5e5>" + ini_get("rom_device") + "</#>\n\n"+
-    "  UPDATED : <#33b5e5>@DATE@</#>\n\n\n"+
-    "Press Next to continue the installation...",
+    "by : <#33b5e5>\n\n\t"+ 
+    ini_get("rom_author") + "</#>\n\n\n\n\n"+ 
+    "VERSION :\n\t<#33b5e5>" + ini_get("rom_version") + "</#>\n\n"+
+    "DEVICE :\n\t<#33b5e5>" + ini_get("rom_device") + "</#>\n\n"+
+    "ROM BUILD DATE :\n\t<#33b5e5>"+prop("build.prop", "ro.build.date")+"</#>\n\n\n\n\n\n"+
+    "\tPress Next to continue the installation...",
   "icons/info"
 );
-exec("/sbin/busybox","mount","/system");
 textbox(
     "Changelog",
     "Plain-Changelog",
@@ -81,16 +82,41 @@ checkbox(
 			"Live Wallpapers",     "",0, #--item.1.6
 			"Slim File Manager",     "",0 #--item.1.7
 );
-selectbox(
-	"Boot Animations Selection",
-		"Bootanimation mods",
-		"@personalize",
-		"bootanim.prop",
-
-  	"Enable bootanimation?","",	2,	#-- Group 1
-		"Yes","",		1,	#-- selected.0 = 1
-		"No","",		0	#-- selected.0 = 2
+alert(
+    "Stock values:",
+	"LCD Density: "+prop("build.prop", "ro.sf.lcd_density")
 );
+writetmpfile("currentdensity.prop", "stockdensity="+prop("build.prop", "ro.sf.lcd_density"));
+selectbox(
+	"Plain-Tweak Build.prop Mods",
+		"Build.prop customization",
+		"@personalize",
+		"buildpropmods.prop",
+
+  	"LCD Density","",				2,	
+		"Stock","",				1,
+		"180","xhdpi/hdpi/tvdpi",		0,
+		"200","xhdpi/hdpi/tvdpi",		0,
+		"220","xhdpi/hdpi/tvdpi",		0,
+		"240","xhdpi/hdpi/tvdpi",		0,
+		"260","xhdpi/hdpi/tvdpi",		0,
+		"280","xxhdpi/xhdpi/hdpi/tvdpi",	0,
+		"300","xxhdpi/xhdpi/hdpi/tvdpi",	0,
+		"320","xxhdpi/xhdpi/hdpi/tvdpi",	0,
+		"340","xxhdpi/xhdpi/hdpi/tvdpi",	0,
+		"360","xxhdpi/xhdpi/hdpi/tvdpi",	0,
+		"380","xxhdpi/xhdpi/hdpi",		0,
+		"400","xxhdpi/xhdpi/hdpi",		0,
+		"420","xxhdpi/xhdpi/hdpi",		0,
+		"440","xxhdpi/xhdpi",			0,
+		"460","xxhdpi/xhdpi",			0,
+		"480","xxhdpi/xhdpi",			0,
+
+  	"Enable bootanimation?","",			2,
+		"Yes","",				1,
+		"No","",				0
+);
+
 viewbox(
   "Ready To Install",
   "All information has been collected for installation.\n\n"+
@@ -120,9 +146,9 @@ if
       "Reboot",
       "Reboot Now",
       "icons/info",
-      "Wipe Dalvik/Cache",
+      "Reboot",
       "No"
   )=="yes"
 then
-writetmpfile("wipecaches.prop",	"wipecaches=true");
+  reboot("onfinish");
 endif;
