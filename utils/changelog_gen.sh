@@ -30,11 +30,15 @@ do
         origin=`grep "$project" $ANDROID_BUILD_TOP/.repo/manifest.xml | awk {'print $4'} | cut -f2 -d '"'`
         if [ "$origin" = "aosp" ] || [ "$origin" = "github" ]; then
             proj_credit=AOSP
-        elif [ "$origin" = "aokp" ]; then
-            proj_credit=AOKP
+        elif [ "$origin" = "aicp" ]; then
+            proj_credit=AICP
         elif [ "$origin" = "cm" ]; then
             proj_credit=CyanogenMod
+        elif [ "$origin" = "liquid" ]; then
+            proj_credit=LiquidSmooth
         elif [ "$origin" = "pa-legacy" ]; then
+            proj_credit=Plain-Andy
+        elif [ "$origin" = "plain" ]; then
             proj_credit=Plain-Andy
         else
             proj_credit="$origin"
