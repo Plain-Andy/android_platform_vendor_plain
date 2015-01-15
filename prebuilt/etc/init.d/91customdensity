@@ -1,28 +1,17 @@
 #!/system/bin/sh
 mount -o remount,rw /system
-if [ ! -e /system/densitybackup.prop ]
-then
-echo 'stockdensity='$(getprop ro.sf.lcd_density) > /system/densitybackup.prop;
-echo 'stockdensity='$(getprop ro.sf.lcd_density) >> /system/build.prop
-chmod 0777 /system/densitybackup.prop
-exit
-fi
-stockdensity=$(grep "stockdensity" /system/densitybackup.prop  | sed 's/stockdensity*.//')
-setprop stockdensity $stockdensity
 if [ -e /sdcard/customdensity ]
 then
-cp /sdcard/customdensity /data/local/tmp/customdensity
-customdensity=$(grep "customdensity" /data/local/tmp/customdensity  | sed 's/customdensity*.//')
-setprop customdensity $customdensity
-if [ $(getprop customdensity) -gt $(getprop stockdensity) ]
+source /sdcard/customdensity
+if [ $customdensity -gt $(getprop ro.sf.lcd_density) ]
 then
-compare=$(expr $(getprop customdensity) - $(getprop stockdensity))
+compare=$(expr $customdensity - $(getprop ro.sf.lcd_density) )
 else
-compare=$(expr $(getprop stockdensity) - $(getprop customdensity))
+compare=$(expr $(getprop ro.sf.lcd_density) - $customdensity )
 fi
 echo "Comparison is "$compare
 setprop comparedensity $compare
-if [ 180 -gt $(getprop customdensity) ]
+if [ 180 -gt $customdensity ]
 then
 echo "Aborting; Custom density is less than 180"
 exit
@@ -32,22 +21,11 @@ then
 echo "Aborting; Density comparison is more than 180"
 exit
 fi
-if [ $(getprop customdensity) != $(getprop ro.sf.lcd_density) ];
+if [ $customdensity != $(getprop ro.sf.lcd_density) ];
 	then
-		setprop ro.sf.lcd_density $customdensity
-		sed -i '/customdensity=/d' /system/build.prop;
-		sed -i '/ro.sf.lcd_density=/d' /system/build.prop;
-		echo 'customdensity='$(getprop customdensity) >> /system/build.prop;
-		echo 'ro.sf.lcd_density='$(getprop customdensity) >> /system/build.prop;
-		
+	    setprop customdensity $customdensity
 fi
 else
-if [ "$stockdensity" != $(getprop ro.sf.lcd_density) ];
-then
-sed -i '/stockdensity=/d' /system/build.prop;
-echo 'stockdensity='$stockdensity >> /system/build.prop;
-sed -i '/ro.sf.lcd_density=/d' /system/build.prop;
-echo 'ro.sf.lcd_density='$stockdensity >> /system/build.prop;
-fi
+setprop customdensity $(getprop ro.sf.lcd_density)
 fi
 mount -o remount,ro /system
