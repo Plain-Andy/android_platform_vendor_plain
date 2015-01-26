@@ -15,13 +15,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	persist.sys.root_access=3 \
 	persist.sys.strictmode.visual=0 \
 	persist.sys.strictmode.disable=1 \
-        ro.max.fling_velocity=14000 \
-        ro.min.fling_velocity=9000 \
-        persist.sys.scrollingcache=3
-
-ADDITIONAL_DEFAULT_PROPERTIES += \
-	ro.adb.secure=0 \
-	enable_plaintweak=true
+    ro.max.fling_velocity=14000 \
+    ro.min.fling_velocity=9000 \
+    persist.sys.scrollingcache=3
 
 # Embed SuperUser
 SUPERUSER_EMBEDDED := true
