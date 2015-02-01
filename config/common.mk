@@ -44,7 +44,6 @@ PRODUCT_COPY_FILES += \
     vendor/plain/prebuilt/bin/plaintweak:system/bin/plaintweak \
     vendor/plain/prebuilt/bin/bootanitoggle:system/bin/bootanitoggle \
     vendor/plain/prebuilt/etc/init.d/99customanimation:/system/etc/init.d/99customanimation \
-    vendor/plain/prebuilt/etc/init.d/91customdensity:/system/etc/init.d/91customdensity \
     vendor/plain/prebuilt/etc/init.d/92plainwatcher:/system/etc/init.d/92plainwatcher
 
 #Add System rewriteable/read only scripts
