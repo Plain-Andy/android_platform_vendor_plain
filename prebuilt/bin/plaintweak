@@ -250,9 +250,7 @@ kernelconfig() {
 	DATE=$(date +"%m"-"%d"-"%y")
 	mkdir -p /sdcard/plain-tweak/$DATE
 	mv /sdcard/plaintweak /sdcard/plain-tweak/$DATE/plaintweak
-	fi	
-	if [ -z "$2" ]; then
-	configselection=$2
+	fi
 	case "$2" in
 		maxkhz)
 			maxkhz extsd='sdcard'
@@ -282,22 +280,19 @@ kernelconfig() {
 			"Exiting: Invalid input"
 			;;
 	esac
-	else
-		maxkhz extsd='sdcard'
-		maxkhz2 extsd='sdcard'
-		minkhz extsd='sdcard'
-		minkhz2 extsd='sdcard'
-		gov extsd='sdcard'
-		gov2 extsd='sdcard'
-		scheduler extsd='sdcard'
-		tcpcong extsd='sdcard'
-	
 }
 backupbuildprop() {
 	cp /system/build.prop /system/.build.prop-original
 }
 restorebuildprop() {
 	cp /system/.build.prop-original /system/build.prop
+}
+restoreplaintweakconfig() {
+	mkdir -p /system/vendor/overlay
+	cat /sdcard/plaintweak > /system/vendor/overlay/local.prop
+	cat /sdcard/customdensity >> /system/vendor/overlay/local.prop
+	echo 'enable_plaintweak=1' >> /system/vendor/overlay/local.prop
+	chmod 0755 /system/vendor/overlay/local.prop
 }
 bootanim() {
 	case "$setbootanim" in
@@ -368,6 +363,21 @@ case "$1" in
     restorebuildprop
   ;;
   kernelconfig)
-    kernelconfig
+	configselection=$2
+	if [ -z "$configselection" ]; then
+    maxkhz extsd='sdcard'
+	maxkhz2 extsd='sdcard'
+	minkhz extsd='sdcard'
+	minkhz2 extsd='sdcard'
+	gov extsd='sdcard'
+	gov2 extsd='sdcard'
+	scheduler extsd='sdcard'
+	tcpcong extsd='sdcard'
+	else
+	kernelconfig
+	fi
+  ;;
+  restoreplaintweakconfig)
+	restoreplaintweakconfig
   ;;
 esac
