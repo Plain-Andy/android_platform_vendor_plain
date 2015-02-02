@@ -14,7 +14,7 @@ if [ -z "$sdate" ]; then
 fi
 echo "" > $ANDROID_BUILD_TOP/Changelog_$cdate.htm
 if [ -d $OUT ]; then
-echo "" > $OUT/system/etc/CHANGELOG.txt
+echo '<body bgcolor="black"><font color="white">' > $OUT/system/etc/CHANGELOG.txt
 fi
 # Find the directories to log
 find $ANDROID_BUILD_TOP -name .git | sed 's/\/.git//g' | sed 'N;$!P;$!D;$d' | while read line
@@ -46,6 +46,7 @@ do
         # Write the changelog
         echo "<b><p>*--- ROM Source: $proj_credit ---*</p></b>" >> $ANDROID_BUILD_TOP/Changelog_$cdate.htm
         echo "<b><p>-$project-</p></b>" >> $ANDROID_BUILD_TOP/Changelog_$cdate.htm
+        echo  >> $OUT/system/etc/CHANGELOG.txt
         echo "<b><p>*--- ROM Source: $proj_credit ---*</p>" >> $OUT/system/etc/CHANGELOG.txt
         echo "<p>-$project-</p></b>" >> $OUT/system/etc/CHANGELOG.txt
         echo "$log" | while read line
@@ -54,6 +55,8 @@ do
              echo "<p>$line</p>" >> $OUT/system/etc/CHANGELOG.txt
         done
         echo "" >> $ANDROID_BUILD_TOP/Changelog_$cdate.htm
-        echo "" >> $OUT/system/etc/CHANGELOG.txt
     fi
 done
+if [ -d $OUT ]; then
+echo "</body></font>" >> $OUT/system/etc/CHANGELOG.txt
+fi
