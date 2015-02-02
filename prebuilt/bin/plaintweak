@@ -253,31 +253,32 @@ kernelconfig() {
 	fi
 	case "$2" in
 		maxkhz)
-			maxkhz extsd='sdcard'
+			maxkhz
 			;;
 		maxkhz2)
-			maxkhz2 extsd='sdcard'
+			maxkhz2
 			;;
 		minkhz)
-			minkhz extsd='sdcard'
+			minkhz
 			;;
 		minkhz2)
-			minkhz2 extsd='sdcard'
+			minkhz2
 			;;
 		gov)
-			gov extsd='sdcard'
+			gov
 			;;
 		gov2)
-			gov2 extsd='sdcard'
+			gov2
 			;;
 		scheduler)
-			scheduler extsd='sdcard'
+			scheduler
 			;;
 		tcpcong)
-			tcpcong extsd='sdcard'
+			tcpcong
 			;;
 		*)
 			"Exiting: Invalid input"
+			exit
 			;;
 	esac
 }
@@ -347,6 +348,7 @@ density() {
 if [ ! -e /tmp/recovery.log ]; then
 sysrw
 fi
+extsd='sdcard'
 case "$1" in
   density)
     setdensity=$2
@@ -365,14 +367,14 @@ case "$1" in
   kernelconfig)
 	configselection=$2
 	if [ -z "$configselection" ]; then
-    maxkhz extsd='sdcard'
-	maxkhz2 extsd='sdcard'
-	minkhz extsd='sdcard'
-	minkhz2 extsd='sdcard'
-	gov extsd='sdcard'
-	gov2 extsd='sdcard'
-	scheduler extsd='sdcard'
-	tcpcong extsd='sdcard'
+    maxkhz 
+	maxkhz2
+	minkhz
+	minkhz2
+	gov
+	gov2
+	scheduler
+	tcpcong
 	else
 	kernelconfig
 	fi
