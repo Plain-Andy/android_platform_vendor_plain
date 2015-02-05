@@ -18,6 +18,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.max.fling_velocity=14000 \
     ro.min.fling_velocity=9000 \
     persist.sys.scrollingcache=3
+    
+ADDITIONAL_DEFAULT_PROPERTIES += \
+	ro.adb.secure=0
 
 # Embed SuperUser
 SUPERUSER_EMBEDDED := true
@@ -42,7 +45,6 @@ PRODUCT_COPY_FILES += \
     vendor/plain/prebuilt/etc/init.local.rc:root/init.aicp.rc \
     vendor/plain/prebuilt/etc/init.plain.kerneltweak.sh:system/etc/init.plain.kerneltweak.sh \
     vendor/plain/prebuilt/bin/plaintweak:system/bin/plaintweak \
-    vendor/plain/prebuilt/bin/bootanitoggle:system/bin/bootanitoggle \
     vendor/plain/prebuilt/etc/init.d/99customanimation:/system/etc/init.d/99customanimation \
     vendor/plain/prebuilt/etc/init.d/92plainwatcher:/system/etc/init.d/92plainwatcher
 

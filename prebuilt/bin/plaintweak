@@ -290,34 +290,27 @@ restorebuildprop() {
 }
 restoreplaintweakconfig() {
 	mkdir -p /system/vendor/overlay
+	if [ -e /sdcard/plaintweak ]; then
 	cat /sdcard/plaintweak > /system/vendor/overlay/local.prop
+	fi
+	if [ -e /sdcard/customdensity ]; then
 	cat /sdcard/customdensity >> /system/vendor/overlay/local.prop
+	fi
 	echo 'enable_plaintweak=1' >> /system/vendor/overlay/local.prop
-	chmod 0755 /system/vendor/overlay/local.prop
 }
 bootanim() {
-	case "$setbootanim" in
-	enable)
-		sed -i -e '/debug.sf.nobootanimation=1/d' /vendor/overlay/local.prop
-		if [ -e /tmp/recovery.log ]; then
-		echo "Enabled boot animations from Aroma" >> /tmp/recovery.log
-		else
-		echo -n '\03 Build-Prop Tweaks\0 Enabled boot animations\0' > /dev/log/main
-		sysro
-		fi
-		echo "Enabled boot animations"
-	;;
-	disable)
-		echo "debug.sf.nobootanimation=1" >> /vendor/overlay/local.prop
-		if [ -e /tmp/recovery.log ]; then
-		echo "Disabled boot animations from Aroma" >> /tmp/recovery.log
-		else
-		echo -n '\03 Build-Prop Tweaks\0 Disabled boot animations\0' > /dev/log/main
-		sysro
-		fi
-		echo "Disabled boot animations"
-	;;
-	esac
+	bootanim=$(grep "debug.sf.nobootanimation" /vendor/overlay/local.prop | sed 's/debug.sf.nobootanimation*.//')
+	if [ -n $bootanim ]; then
+	if [ "$bootanim" == "1" ]; then
+	echo "Boot Animation is currently off"
+	echo "Re-enabling Boot Animation"
+	sed -i -e 's/debug\.sf\.nobootanimation=1//' /vendor/overlay/local.prop
+	fi
+	fi
+	if [ -z $bootanim ]; then
+	echo "Disabling Boot Animation"
+	echo "debug.sf.nobootanimation=1" >> /vendor/overlay/local.prop
+	fi
 }
 density() {
 	case "$setdensity" in
@@ -345,6 +338,18 @@ density() {
 		;;
 	esac
 }
+toggle() {
+	toggle=$(getprop enable_plaintweak)
+	sed -i '/enable_plaintweak/d' /vendor/overlay/local.prop
+	if [ "$toggle" == "0" ]; then
+	echo "Enabling Plain-Tweak"
+	setprop enable_plaintweak 1
+	fi
+	if [ "$toggle" == "1" ]; then
+	echo "Disabling Plain-Tweak"
+	setprop enable_plaintweak 0
+	fi
+	}
 if [ ! -e /tmp/recovery.log ]; then
 sysrw
 fi
@@ -355,7 +360,6 @@ case "$1" in
     density
   ;;
   bootanim)
-    setbootanim=$2
     bootanim
   ;;
   backupbuildprop)
@@ -381,5 +385,8 @@ case "$1" in
   ;;
   restoreplaintweakconfig)
 	restoreplaintweakconfig
+  ;;
+  toggle)
+	toggle
   ;;
 esac
