@@ -297,6 +297,7 @@ restoreplaintweakconfig() {
 	cat /sdcard/customdensity >> /system/vendor/overlay/local.prop
 	fi
 	echo 'enable_plaintweak=1' >> /system/vendor/overlay/local.prop
+	chmod 0644 /system/vendor/overlay/local.prop
 }
 bootanim() {
 	bootanim=$(grep "debug.sf.nobootanimation" /vendor/overlay/local.prop | sed 's/debug.sf.nobootanimation*.//')
