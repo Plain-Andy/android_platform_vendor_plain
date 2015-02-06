@@ -251,7 +251,7 @@ kernelconfig() {
 	mkdir -p /sdcard/plain-tweak/$DATE
 	mv /sdcard/plaintweak /sdcard/plain-tweak/$DATE/plaintweak
 	fi
-	case "$2" in
+	case "$configselection" in
 		maxkhz)
 			maxkhz
 			;;
