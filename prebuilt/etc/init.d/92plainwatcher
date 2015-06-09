@@ -7,29 +7,33 @@ setprop stockmaxkhz $(cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq)
 cmd='sh /system/etc/init.plain.kerneltweak.sh'
 sha=0
 sdcustomdensity=$(grep "customdensity=" /sdcard/customdensity  | sed 's/customdensity*.//')
-customdensity=$(grep "customdensity=" /vendor/overlay/local.prop  | sed 's/customdensity*.//')
+customdensity=$(grep "customdensity=" /vendor/build.prop  | sed 's/customdensity*.//')
 maindensity(){
 if [ $customdensity != $(getprop ro.sf.lcd_density) ]
 	then
 	comparedensity
+	if [ $(getprop comparedensity) -gt 0 ]
+	then
 	enabledensity
+	fi
 fi
 }
 sourceconfigdensity(){
 	if [ -z $customdensity ]
 	then
 	. /sdcard/customdensity
-	cat /sdcard/customdensity >> /vendor/overlay/local.prop
+	cat /sdcard/customdensity >> /vendor/build.prop
 	else
 	propcomparedensity	
 	fi
 	}
 enabledensity(){
 	setprop customdensity $customdensity
+	setprop qemu.sf.lcd_density $customdensity
 	}
 disabledensity(){
 	setprop customdensity $(getprop ro.sf.lcd_density)
-	sed -i '/customdensity=/d' /vendor/overlay/local.prop
+	sed -i '/customdensity=/d' /vendor/build.prop
 	}
 comparedensity(){
 	if [ $customdensity -gt $(getprop ro.sf.lcd_density) ]
@@ -54,7 +58,7 @@ comparedensity(){
 propcomparedensity(){
 	if [ -z $sdcustomdensity ]
 	then
-	sed -i '/customdensity=/d' /vendor/overlay/local.prop
+	sed -i '/customdensity=/d' /vendor/build.prop
 	disabledensity
 	echo 'customdensity='$(getprop customdensity)  > /sdcard/customdensity
 	. /sdcard/customdensity
@@ -62,8 +66,8 @@ propcomparedensity(){
 	fi
 	if [ $customdensity != $sdcustomdensity ]
 	then
-	sed -i '/customdensity=/d' /vendor/overlay/local.prop
-	echo 'customdensity='$sdcustomdensity >> /vendor/overlay/local.prop
+	sed -i '/customdensity=/d' /vendor/build.prop
+	echo 'customdensity='$sdcustomdensity >> /vendor/build.prop
 	fi
 	}
 maindensity
@@ -161,7 +165,7 @@ if [ $(getprop enable_plaintweak) != "0" ]; then
   disabledensity
 fi
   sleep $(getprop updateinterval)
-  sed -i '/enable_plaintweak/d' /vendor/overlay/local.prop
-  echo 'enable_plaintweak='$(getprop enable_plaintweak) >> /vendor/overlay/local.prop
+  sed -i '/enable_plaintweak/d' /vendor/build.prop
+  echo 'enable_plaintweak='$(getprop enable_plaintweak) >> /vendor/build.prop
 sysro
 done

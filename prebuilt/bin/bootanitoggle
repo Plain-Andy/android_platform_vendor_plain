@@ -1,16 +1,2 @@
 #!/system/bin/sh
-bootanim=$(grep "debug.sf.nobootanimation" /vendor/overlay/local.prop | sed 's/debug.sf.nobootanimation*.//')
-sysrw
-if [ -n $bootanim ]; then
-if [ "$bootanim" == "1" ]; then
-echo "Boot Animation is currently off"
-echo "Re-enabling Boot Animation"
-sed -i -e 's/debug\.sf\.nobootanimation=1//' /vendor/overlay/local.prop
-sysro
-fi
-fi
-if [ -z $bootanim ]; then
-echo "Disabling Boot Animation"
-echo "debug.sf.nobootanimation=1" >> /vendor/overlay/local.prop
-fi
-sysro
+/system/bin/plaintweak bootanim

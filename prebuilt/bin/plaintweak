@@ -26,7 +26,7 @@ gov(){
 	if [ "$input" != "0" ];then
 	gov=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors | sed 's/ /\n/g' | sed '$d' | head -n $input | tail -n 1)
 	echo 'gov='$gov >> /$extsd/plaintweak
-	echo 'gov='$gov >> /vendor/overlay/local.prop
+	echo 'gov='$gov >> /vendor/build.prop
 	fi
 clear
 }
@@ -53,11 +53,11 @@ gov2(){
 	exit
 	fi
 	sed -i '/gov2=/d' /$extsd/plaintweak
-	sed -i '/gov2=/d' /vendor/overlay/local.prop
+	sed -i '/gov2=/d' /vendor/build.prop
 	if [ "$input" != "0" ];then
 	gov=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors | sed 's/ /\n/g' | sed '$d' | head -n $input | tail -n 1)
 	echo 'gov2='$gov >> /$extsd/plaintweak
-	echo 'gov2='$gov >> /vendor/overlay/local.prop
+	echo 'gov2='$gov >> /vendor/build.prop
 	fi
 clear
 }
@@ -83,12 +83,12 @@ minkhz(){
 	echo "Invalid selection: Aborting script"
 	exit
 	fi
-	sed -i '/minkhz=/d' /vendor/overlay/local.prop
+	sed -i '/minkhz=/d' /vendor/build.prop
 	sed -i '/minkhz=/d' /$extsd/plaintweak
 	if [ "$input" != "0" ];then
 	minkhz=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies | sed 's/ /\n/g' | sed '$d' | head -n 4 | head -n $input | tail -n 1)
 	echo 'minkhz='$minkhz >> /$extsd/plaintweak
-	echo 'minkhz='$minkhz >> /vendor/overlay/local.prop
+	echo 'minkhz='$minkhz >> /vendor/build.prop
 	fi
 clear
 }
@@ -114,12 +114,12 @@ minkhz2(){
 	echo "Invalid selection: Aborting script"
 	exit
 	fi
-	sed -i '/minkhz2=/d' /vendor/overlay/local.prop
+	sed -i '/minkhz2=/d' /vendor/build.prop
 	sed -i '/minkhz2=/d' /$extsd/plaintweak
 	if [ "$input" != "0" ];then
 	minkhz=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies | sed 's/ /\n/g' | sed '$d' | head -n 4 | head -n $input | tail -n 1)
 	echo 'minkhz2='$minkhz >> /$extsd/plaintweak
-	echo 'minkhz2='$minkhz >> /vendor/overlay/local.prop
+	echo 'minkhz2='$minkhz >> /vendor/build.prop
 	fi
 clear
 }
@@ -145,12 +145,12 @@ maxkhz(){
 	echo "Invalid selection: Aborting script"
 	exit
 	fi
-	sed -i '/maxkhz=/d' /vendor/overlay/local.prop
+	sed -i '/maxkhz=/d' /vendor/build.prop
 	sed -i '/maxkhz=/d' /$extsd/plaintweak
 	if [ "$input" != "0" ];then
 	maxkhz=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies | sed 's/ /\n/g' | sed '$d' | tail -n 5 | head -n $input | tail -n 1)
 	echo 'maxkhz='$maxkhz >> /$extsd/plaintweak
-	echo 'maxkhz='$maxkhz >> /vendor/overlay/local.prop
+	echo 'maxkhz='$maxkhz >> /vendor/build.prop
 	fi
 clear
 }
@@ -176,12 +176,12 @@ maxkhz2(){
 	echo "Invalid selection: Aborting script"
 	exit
 	fi
-	sed -i '/maxkhz2=/d' /vendor/overlay/local.prop
+	sed -i '/maxkhz2=/d' /vendor/build.prop
 	sed -i '/maxkhz2=/d' /$extsd/plaintweak
 	if [ "$input" != "0" ];then
 	maxkhz=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies | sed 's/ /\n/g' | sed '$d' | tail -n 5 | head -n $input | tail -n 1)
 	echo 'maxkhz2='$maxkhz >> /$extsd/plaintweak
-	echo 'maxkhz2='$maxkhz >> /vendor/overlay/local.prop
+	echo 'maxkhz2='$maxkhz >> /vendor/build.prop
 	fi
 clear
 }
@@ -210,8 +210,8 @@ fi
 if [ "$input" != "0" ];then
 scheduler=$(cat /sys/block/mmcblk0/queue/scheduler | sed 's/[[]//g' | sed 's/[]]//g' | sed 's/ /\n/g' | sed '$d' | sed 's/ //g' | head -n $input | tail -n 1)
 echo 'scheduler='$scheduler >> /$extsd/plaintweak
-sed -i '/scheduler=/d' /vendor/overlay/local.prop
-echo 'scheduler='$scheduler >> /vendor/overlay/local.prop
+sed -i '/scheduler=/d' /vendor/build.prop
+echo 'scheduler='$scheduler >> /vendor/build.prop
 fi
 clear
 }
@@ -237,12 +237,12 @@ if [ "$input" -gt "$line_counter" ];then
 echo "Invalid selection: Aborting script"
 exit
 fi
-sed -i '/tcpcong=/d' /vendor/overlay/local.prop
+sed -i '/tcpcong=/d' /vendor/build.prop
 sed -i '/tcpcong=/d' /$extsd/plaintweak
 if [ "$input" != "0" ];then
 tcpcong=$(cat /proc/sys/net/ipv4/tcp_available_congestion_control | sed 's/ /\n/g' | head -n $input | tail -n 1)
 echo 'tcpcong='$tcpcong >> /$extsd/plaintweak
-echo 'tcpcong='$tcpcong >> /vendor/overlay/local.prop
+echo 'tcpcong='$tcpcong >> /vendor/build.prop
 fi
 }
 kernelconfig() {
@@ -291,26 +291,26 @@ restorebuildprop() {
 restoreplaintweakconfig() {
 	mkdir -p /system/vendor/overlay
 	if [ -e /sdcard/plaintweak ]; then
-	cat /sdcard/plaintweak > /system/vendor/overlay/local.prop
+	cat /sdcard/plaintweak > /system/vendor/build.prop
 	fi
 	if [ -e /sdcard/customdensity ]; then
-	cat /sdcard/customdensity >> /system/vendor/overlay/local.prop
+	cat /sdcard/customdensity >> /system/vendor/build.prop
 	fi
-	echo 'enable_plaintweak=1' >> /system/vendor/overlay/local.prop
-	chmod 0644 /system/vendor/overlay/local.prop
+	echo 'enable_plaintweak=1' >> /system/vendor/build.prop
+	chmod 0644 /system/vendor/build.prop
 }
 bootanim() {
-	bootanim=$(grep "debug.sf.nobootanimation" /vendor/overlay/local.prop | sed 's/debug.sf.nobootanimation*.//')
+	bootanim=$(grep "debug.sf.nobootanimation" /vendor/build.prop | sed 's/debug.sf.nobootanimation*.//')
 	if [ -n $bootanim ]; then
 	if [ "$bootanim" == "1" ]; then
 	echo "Boot Animation is currently off"
 	echo "Re-enabling Boot Animation"
-	sed -i -e 's/debug\.sf\.nobootanimation=1//' /vendor/overlay/local.prop
+	sed -i -e 's/debug\.sf\.nobootanimation=1//' /vendor/build.prop
 	fi
 	fi
 	if [ -z $bootanim ]; then
 	echo "Disabling Boot Animation"
-	echo "debug.sf.nobootanimation=1" >> /vendor/overlay/local.prop
+	echo "debug.sf.nobootanimation=1" >> /vendor/build.prop
 	fi
 }
 density() {
@@ -341,7 +341,7 @@ density() {
 }
 toggle() {
 	toggle=$(getprop enable_plaintweak)
-	sed -i '/enable_plaintweak/d' /vendor/overlay/local.prop
+	sed -i '/enable_plaintweak/d' /vendor/build.prop
 	if [ "$toggle" == "0" ]; then
 	echo "Enabling Plain-Tweak"
 	setprop enable_plaintweak 1
